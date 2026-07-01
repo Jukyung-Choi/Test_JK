@@ -1,0 +1,1877 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>내 취향은 누구?!</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  background: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.screen {
+  width: 375px;
+  height: 812px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, #0e0040 0%, #5d0f69 100%);
+  flex-shrink: 0;
+}
+
+/* ── bg (73:15523) ── */
+.bg {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 375px;
+  height: 814px;
+}
+.bg-img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 375px;
+  height: 814px;
+}
+.bg-img img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  display: block;
+}
+
+/* ── dim (73:15525) ── */
+.dim {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 364px;
+  width: 375px;
+  height: 449px;
+  background: linear-gradient(
+    180deg,
+    rgba(177,0,173,0)    11.965%,
+    rgba(177,0,173,0.25) 35.667%,
+    rgba(76,0,75,0.45)   60.496%,
+    rgb(0,0,0)           79.566%
+  );
+}
+
+/* ── btn (73:15526) ── */
+.btn {
+  position: absolute;
+  left: 16px;
+  top: 706px;
+  width: 343px;
+  height: 56px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  padding: 17px 24px;
+  border-radius: 8px;
+}
+.btn-text {
+  flex: 1 0 0;
+  min-width: 1px;
+  font-family: -apple-system, 'SF Pro Text', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 22px;
+  color: #999999;
+  text-align: center;
+  word-break: break-word;
+}
+
+/* ── progress section (73:15527) ── */
+.progress-section {
+  position: absolute;
+  bottom: 121px;
+  left: 0;
+  width: 375px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* ── progress inner (73:15535) ── */
+.progress-wrap {
+  position: relative;
+  height: 78px;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+/* ── progress_bg white (73:15539) ── */
+.progress-bg-white {
+  position: absolute;
+  left: 50%;
+  transform: translateX(calc(-50% + 0.5px));
+  top: 38px;
+  width: 328px;
+  height: 22px;
+  border-radius: 100px;
+  background: #ffffff;
+}
+
+/* ── progress_bg purple (73:15540) ── */
+.progress-bg-purple {
+  position: absolute;
+  left: 50%;
+  transform: translateX(calc(-50% + 0.5px));
+  top: 38px;
+  width: 328px;
+  height: 22px;
+  border-radius: 100px;
+  background: #6f006d;
+}
+
+/* ── progress fill (73:15541) ── */
+.progress-fill {
+  position: absolute;
+  left: 50%;
+  transform: translateX(calc(-50% - 101.5px));
+  top: 38px;
+  width: 124px;
+  height: 22px;
+  border-radius: 100px;
+  background: linear-gradient(90deg, #d300b3, #ff19a3);
+}
+
+/* ── step numbers row (73:15542) ── */
+.progress-nums {
+  position: absolute;
+  left: 24px;
+  top: 38px;
+  width: 328px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: center;
+  width: 22px;
+  flex-shrink: 0;
+  position: relative;
+}
+.step.op0 { opacity: 0; }
+.step-dot {
+  position: relative;
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+}
+.step-dot img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.step-label {
+  font-family: -apple-system, 'SF Pro Text', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 16px;
+  text-align: center;
+  color: #ffffff;
+  white-space: nowrap;
+  flex-shrink: 0;
+  position: relative;
+  word-break: break-word;
+}
+.step-label.medium { font-weight: 500; }
+
+/* ── Bubble ZEM / BubbleRight (20:17626) at left:279px top:0 ── */
+.bubble-right {
+  position: absolute;
+  left: 279px;
+  top: 0;
+  height: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+/* unified bubble inner — background toggled by .active / .inactive */
+.bubble-inner {
+  display: flex;
+  height: 28px;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 10px;
+  border-radius: 38px;
+  flex-shrink: 0;
+  position: relative;
+}
+.bubble-inner.active   { background: #840081; }
+.bubble-inner.inactive { background: #ffffff; }
+.bubble-content {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  position: relative;
+}
+.bubble-icon {
+  position: relative;
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+}
+.bubble-icon img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+/* unified bubble text — color toggled by .active-text / .inactive-text */
+.bubble-text {
+  font-family: -apple-system, 'SF Pro Text', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 18px;
+  white-space: nowrap;
+  position: relative;
+  flex-shrink: 0;
+  word-break: break-word;
+}
+.bubble-text.active-text   { color: #ffffff; }
+.bubble-text.inactive-text { color: #292930; }
+/* tail for ZEM bubble (20:17651): left:calc(50%+22px) translateX(-50%) top:28px w:8 h:5 */
+.bubble-tail-zem {
+  position: absolute;
+  left: calc(50% + 22px);
+  transform: translateX(-50%);
+  top: 28px;
+  width: 8px;
+  height: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.tail-rot {
+  transform: rotate(-90deg);
+  flex-shrink: 0;
+}
+.tail-rot-zem {
+  position: relative;
+  width: 5px;
+  height: 8px;
+}
+.tail-rot-zem img {
+  position: absolute;
+  left: 12.02%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: block;
+  max-width: none;
+  height: 100%;
+  width: calc(100% - 12.02%);
+}
+
+/* ── Bubble center / coin (73:15586) at left:93px top:0 ── */
+.bubble-center {
+  position: absolute;
+  left: 93px;
+  top: 0;
+  height: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.bubble-coin-icon {
+  position: relative;
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+}
+.bubble-coin-icon img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+/* tail for center bubble (I73:15586;1527:26482): left:50% translateX(-50%) top:28px w:8 h:5 */
+.bubble-tail-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 28px;
+  width: 8px;
+  height: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.tail-rot-center {
+  position: relative;
+  width: 5px;
+  height: 8px;
+}
+.tail-rot-center img {
+  position: absolute;
+  left: 12.02%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: block;
+  max-width: none;
+  height: 100%;
+  width: calc(100% - 12.02%);
+}
+
+/* ── title section (73:15587) ── */
+.title-section {
+  position: absolute;
+  bottom: 233px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 375px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: flex-start;
+}
+.title-text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+  text-align: center;
+  color: #ffffff;
+  position: relative;
+  flex-shrink: 0;
+  word-break: break-word;
+}
+.title-h1 {
+  font-family: -apple-system, 'SF Pro', sans-serif;
+  font-weight: 700;
+  font-size: 38px;
+  line-height: normal;
+  text-transform: capitalize;
+  color: #ffffff;
+  width: 100%;
+  position: relative;
+  flex-shrink: 0;
+}
+.title-sub {
+  font-family: -apple-system, 'SF Pro Text', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: #ffffff;
+  width: 100%;
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* ── Home Indicator (73:15593) ── */
+.home-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 375px;
+  height: 34px;
+}
+.home-bar-wrap {
+  position: absolute;
+  bottom: 9px;
+  left: 50%;
+  transform: translateX(calc(-50% + 0.5px));
+  width: 134px;
+  height: 5px;
+}
+.home-bar {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  width: 134px;
+  height: 5px;
+  background: #000000;
+  border-radius: 100px;
+}
+
+/* ── TOP_인앱 (73:15594) ── */
+.top-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #000000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* ── Status bar (73:15595) ── */
+.status-bar {
+  height: 44px;
+  position: relative;
+  flex-shrink: 0;
+  width: 100%;
+}
+.battery {
+  position: absolute;
+  right: 14.34px;
+  top: 17.33px;
+  width: 24.328px;
+  height: 11.333px;
+}
+.battery img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.wifi {
+  position: absolute;
+  right: 43.67px;
+  top: 39.39%;
+  bottom: 35.61%;
+  width: 15.333px;
+}
+.wifi img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.cellular {
+  position: absolute;
+  right: 64px;
+  top: 40.15%;
+  bottom: 35.6%;
+  width: 17px;
+}
+.cellular img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.status-time {
+  position: absolute;
+  left: 48px;
+  transform: translateX(-50%);
+  top: calc(50% - 7.67px);
+  width: 54px;
+  font-family: -apple-system, 'SF Pro Text', sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: normal;
+  text-align: center;
+  color: #ffffff;
+  letter-spacing: -0.3px;
+  word-break: break-word;
+}
+
+/* ── Title bar (73:15596) ── */
+.title-bar {
+  display: flex;
+  height: 52px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  position: relative;
+  flex-shrink: 0;
+  width: 100%;
+}
+.btn-icon {
+  position: relative;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  opacity: 0;
+}
+.timer-pill {
+  background: rgba(154,154,154,0.5);
+  display: flex;
+  gap: 20px;
+  height: 28px;
+  align-items: center;
+  overflow: hidden;
+  padding-left: 8px;
+  border-radius: 100px;
+  flex-shrink: 0;
+  width: 230px;
+  position: relative;
+}
+.timer-ic-text {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  flex-shrink: 0;
+  position: relative;
+}
+.clock-icon {
+  position: relative;
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  opacity: 0.8;
+}
+.clock-icon img {
+  position: absolute;
+  top: 7.15%;
+  left: 7.15%;
+  right: 7.14%;
+  bottom: 7.14%;
+  display: block;
+  width: calc(100% - 14.29%);
+  height: calc(100% - 14.29%);
+  max-width: none;
+}
+.timer-text {
+  font-family: -apple-system, 'SF Pro Text', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 16px;
+  color: #ffffff;
+  opacity: 0.8;
+  white-space: nowrap;
+  flex-shrink: 0;
+  position: relative;
+  word-break: break-word;
+}
+
+/* ═══════════════════════════════════════════
+   MOTION — 디자인 변경 없음, animation 추가만
+   ═══════════════════════════════════════════ */
+
+/* ── 1. 타이머 Marquee ── */
+@keyframes timer-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+/* 2개의 ic-text 복사본을 가로로 나열한 트랙 */
+.timer-marquee-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: timer-marquee 10s linear infinite;
+}
+
+/* ── 버튼 글로우 스윕 ── */
+@keyframes btn-sweep {
+  0%   { transform: translateX(-120%); }
+  100% { transform: translateX(220%); }
+}
+.s2-btn {
+  overflow: hidden;
+}
+.s2-btn::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 45%;
+  height: 100%;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(255,255,255,0.18) 40%,
+    rgba(255,255,255,0.32) 50%,
+    rgba(255,255,255,0.18) 60%,
+    transparent 100%
+  );
+  transform: translateX(-120%);
+  animation: btn-sweep 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation-delay: 0.6s;
+  pointer-events: none;
+}
+
+/* ── 2. CTA 깜빡임 ── */
+@keyframes cta-blink {
+  0%,  100% { opacity: 1;   }
+  50%        { opacity: 0.4; }
+}
+.btn-text {
+  animation: cta-blink 1.8s ease-in-out infinite;
+}
+
+/* ══════════════════════════════════════════
+   SCREEN 2 — Figma 73:15712 픽셀 재현
+   ══════════════════════════════════════════ */
+#screen1 { display: block; }
+#screen2 { display: none; background: linear-gradient(180deg, #0e0040 0%, #5d0f69 85%); }
+#screen2 .top-bar { background: #180245; }
+
+/* ── title (73:15842) top:116 ── */
+.s2-title {
+  position: absolute;
+  top: 116px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 343px;
+  font-family: -apple-system,'SF Pro',sans-serif;
+  font-weight: 700; font-size: 24px;
+  line-height: normal; text-transform: capitalize;
+  color: #fff; text-align: center; word-break: break-word;
+}
+
+/* ── select indicator ▼ (73:15833) left:174 top:216 ── */
+.s2-sel {
+  position: absolute;
+  left: 174px; top: 216px;
+  width: 28px; height: 20px;
+  overflow: hidden; pointer-events: none;
+  transform: scaleY(-1);
+}
+.s2-sel-inner {
+  position: absolute;
+  left: calc(50% + 10px); transform: translateX(-50%);
+  top: -9px; width: 110px; height: 73px;
+  -webkit-mask-image: url('assets/f30e5188-c919-4c90-b64d-9136c6bd16b7.png');
+          mask-image: url('assets/f30e5188-c919-4c90-b64d-9136c6bd16b7.png');
+  -webkit-mask-position: 34.514px 14px; mask-position: 34.514px 14px;
+  -webkit-mask-size: 20.972px 14.114px; mask-size: 20.972px 14.114px;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+}
+.s2-sel-inner img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+.s2-sel-shine { position:absolute; inset:0; box-shadow:inset 0px 1px 0px 0px #fff; border-radius:inherit; }
+/* bounce animation triggered on card select */
+@keyframes s2-sel-bounce {
+  0%   { transform: scaleY(-1) translateY(0); }
+  30%  { transform: scaleY(-1) translateY(6px); }
+  55%  { transform: scaleY(-1) translateY(-3px); }
+  75%  { transform: scaleY(-1) translateY(3px); }
+  90%  { transform: scaleY(-1) translateY(-1px); }
+  100% { transform: scaleY(-1) translateY(0); }
+}
+.s2-sel.bouncing { animation: s2-sel-bounce 0.55s cubic-bezier(0.22, 1, 0.36, 1); }
+
+/* ── card group (73:15715): deco chars only ── */
+.s2-grp {
+  position: absolute;
+  left: -187px; top: 247px;
+  width: 749.732px; height: 388px;
+  pointer-events: none;
+}
+
+/* ── card stage: full-width at card row, cards centered here ── */
+.s2-stage {
+  position: absolute;
+  top: 247px; left: 0;
+  width: 375px; height: 388px;
+  overflow: visible;
+  perspective: 1100px;
+}
+
+/* ── card element: 252×388, centered in stage ── */
+.s2-card {
+  position: absolute;
+  left: 61.5px; top: 0;
+  width: 252px; height: 388px;
+  overflow: hidden; border-radius: 11.9px;
+  transform-origin: center center;
+  transform-style: preserve-3d;
+  user-select: none; -webkit-user-select: none;
+  will-change: transform, opacity;
+}
+.s2-card.is-center { z-index: 3; cursor: default; }
+.s2-card.is-side   { z-index: 1; cursor: pointer; }
+
+/* ── character image (73:15811) ── */
+/* parent is display:contents at 7,7 → pos relative to card */
+/* Figma: left-[-19px] top-[-5px] w:284 h:468 */
+.s2-chr {
+  position: absolute;
+  left: -19px; top: -5px; width: 284px; height: 468px;
+  pointer-events: none;
+  -webkit-mask-image: url('assets/51173679-d521-4767-88f9-da5a76148981.png');
+          mask-image: url('assets/51173679-d521-4767-88f9-da5a76148981.png');
+  -webkit-mask-size: 238px 373.66px; mask-size: 238px 373.66px;
+  -webkit-mask-position: 26px 12px; mask-position: 26px 12px;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+}
+.s2-chr img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+
+/* ── dim (73:15812) top:230 left:50% w:238 h:151 ── */
+.s2-dim {
+  position: absolute;
+  top: 230px; left: 50%; transform: translateX(-50%);
+  width: 238px; height: 151px; pointer-events: none;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.714) 71.456%, #000 100%);
+  -webkit-mask-image: url('assets/51173679-d521-4767-88f9-da5a76148981.png');
+          mask-image: url('assets/51173679-d521-4767-88f9-da5a76148981.png');
+  -webkit-mask-size: 238px 373.66px; mask-size: 238px 373.66px;
+  -webkit-mask-position: 0px -223px; mask-position: 0px -223px;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+}
+
+/* ── card border (73:15816) left:7 top:7 w:238 h:373.66 border:7px #b3c0c6 ── */
+.s2-bdr {
+  position: absolute;
+  left: 7px; top: 7px; width: 238px; height: 373.66px;
+  border: 7px solid #b3c0c6; border-radius: 11.9px;
+  box-sizing: border-box; pointer-events: none;
+  box-shadow: inset 1px 1px 0 0 rgba(255,255,255,0.36);
+  -webkit-mask-image: url('assets/9738fc36-4315-4b75-bfed-2e55a0d828c7.png');
+          mask-image: url('assets/9738fc36-4315-4b75-bfed-2e55a0d828c7.png');
+  -webkit-mask-size: 252px 387.66px; mask-size: 252px 387.66px;
+  -webkit-mask-position: -7px -7px; mask-position: -7px -7px;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+}
+
+/* ── foil layers ── */
+.s2-f { position:absolute; pointer-events:none; }
+.s2-f img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+.s2-f1,.s2-f2,.s2-f3 {
+  -webkit-mask-image: url('assets/9738fc36-4315-4b75-bfed-2e55a0d828c7.png');
+          mask-image: url('assets/9738fc36-4315-4b75-bfed-2e55a0d828c7.png');
+  -webkit-mask-size: 252px 387.66px; mask-size: 252px 387.66px;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+}
+/* 73:15817 left-[-31px] top-[-6px] w:300 h:400 mask-pos:31px 6px */
+.s2-f1 { left:-31px; top:-6px; width:300px; height:400px;
+  -webkit-mask-position:31px 6px; mask-position:31px 6px; }
+/* 73:15818 left-[-80px] top-[-5px] size:400 mask-pos:80px 5px */
+.s2-f2 { left:-80px; top:-5px; width:400px; height:400px;
+  -webkit-mask-position:80px 5px; mask-position:80px 5px; }
+/* 73:15819 left-[-180px] top-[-5px] w:614 h:409 mask-pos:180px 5px */
+.s2-f3 { left:-180px; top:-5px; width:614px; height:409px;
+  -webkit-mask-position:180px 5px; mask-position:180px 5px; }
+
+/* ── shine streaks ── */
+.s2-sh {
+  position:absolute; pointer-events:none;
+  display:flex; align-items:center; justify-content:center; overflow:hidden;
+}
+/* 73:15820 wrap: left:116 top:-60 w:294.343 h:503.194 */
+.s2-sh1 { left:116px; top:-60px; width:294.343px; height:503.194px; }
+/* 73:15821 wrap: left:-119 top:-90 w:303.077 h:507.877 */
+.s2-sh2 { left:-119px; top:-90px; width:303.077px; height:507.877px; }
+.s2-shb {
+  flex-shrink:0; transform:rotate(28.2deg); filter:blur(5px); background:#fff;
+  -webkit-mask-image: url('assets/9738fc36-4315-4b75-bfed-2e55a0d828c7.png');
+          mask-image: url('assets/9738fc36-4315-4b75-bfed-2e55a0d828c7.png');
+  -webkit-mask-size:252px 387.66px; mask-size:252px 387.66px;
+  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+}
+/* 73:15820 bar: w:39.09 h:550 mask-pos:-116px 60px */
+.s2-sh1 .s2-shb { width:39.09px; height:550px;
+  -webkit-mask-position:-116px 60px; mask-position:-116px 60px; }
+/* 73:15821 bar: w:49 h:550 mask-pos:119px 90px */
+.s2-sh2 .s2-shb { width:49px; height:550px;
+  -webkit-mask-position:119px 90px; mask-position:119px 90px; }
+
+/* ── card info (73:15828) top:275 left:50% w:238 ── */
+.s2-info {
+  position:absolute;
+  top:275px; left:50%; transform:translateX(-50%);
+  width:238px;
+  display:flex; flex-direction:column; gap:10px; align-items:center;
+  transition:opacity .2s;
+}
+.s2-card.is-side .s2-info { opacity:0; pointer-events:none; }
+
+/* 73:15829 name pill */
+.s2-pill {
+  display:flex; align-items:center; justify-content:center;
+  padding:6px 29px; border-radius:999px;
+  background:linear-gradient(90deg,rgba(255,192,243,.5),rgba(184,166,255,.5));
+  backdrop-filter:blur(4.7px); -webkit-backdrop-filter:blur(4.7px);
+  flex-shrink:0;
+}
+.s2-pill span {
+  font-family:-apple-system,'SF Pro Text',sans-serif;
+  font-weight:700; font-size:17px; line-height:24px;
+  color:#fff; white-space:nowrap; text-align:center; word-break:break-word;
+}
+/* 73:15832 desc */
+.s2-desc {
+  width:100%;
+  font-family:-apple-system,'SF Pro Text',sans-serif;
+  font-weight:500; font-size:14.28px; line-height:19.04px;
+  text-align:center; color:#fff;
+}
+
+/* ── deco edge chars (73:15788 left, 73:15798 right) ── */
+/* These live inside .s2-grp; only visible slivers at screen edges */
+.s2-deco { position:absolute; width:212px; height:332.84px; overflow:hidden; pointer-events:none; }
+.s2-dl { left:0; top:35px; }
+.s2-dr { left:537.73px; top:35px; }
+.s2-deco img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+
+/* ── CTA button (73:15714) left:16 top:706 w:343 h:56 ── */
+.s2-btn {
+  position:absolute; left:16px; top:706px; width:343px; height:56px;
+  background:#ff22ed; border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  padding:17px 24px; box-sizing:border-box; gap:8px;
+  cursor:pointer; border:none; outline:none;
+}
+.s2-btn span {
+  flex:1 0 0; min-width:1px;
+  font-family:-apple-system,'SF Pro Text',sans-serif;
+  font-weight:700; font-size:17px; line-height:22px;
+  color:#fff; text-align:center; word-break:break-word;
+}
+
+/* ── close button (73:15847) ── */
+.s2-xbtn { position:relative; flex-shrink:0; width:24px; height:24px; cursor:pointer; }
+/* icon at 20.83% inset = 5px */
+.s2-xinner { position:absolute; top:5px; left:5px; right:5px; bottom:5px; }
+.s2-xv70,.s2-xv71 { position:absolute; inset:-7.14%; }
+.s2-xv70 img,.s2-xv71 img { display:block; width:100%; height:100%; }
+.s2-xv70 { transform:scaleX(-1); }
+.s2-xv71 { transform:scaleX(-1) rotate(90deg); }
+
+/* ══════════════════════════════════════════════════
+   SCREEN 3 — 로딩 (73:15882)
+   bg: same gradient as screen2
+══════════════════════════════════════════════════ */
+#screen3 { display:none; background:linear-gradient(180deg,#0e0040 0%,#5d0f69 85%); }
+#screen3 .top-bar { background:#180245; }
+
+/* title (73:16048): top:116, w:343, centered */
+.s3-title {
+  position:absolute; top:116px;
+  left:50%; transform:translateX(-50%);
+  width:343px;
+  color:#fff;
+  font-family:-apple-system,'SF Pro Text',sans-serif;
+  font-weight:700; font-size:24px; line-height:1.33;
+  text-align:center;
+}
+
+/* card (73:16003): 252×388, top:247, centered */
+.s3-card {
+  position:absolute;
+  left:61.5px; top:247px;
+  width:252px; height:388px;
+  border-radius:19px;
+  overflow:hidden;
+  box-shadow:inset -1px -1px 0px rgba(202,157,194,0.8),
+             inset  1px  1px 0px rgba(255,255,255,0.88);
+}
+/* gradient layers */
+.s3-grad1 {
+  position:absolute; inset:0;
+  background:linear-gradient(180deg,#ff75e3,#fdbcff);
+}
+.s3-grad2 {
+  position:absolute; inset:0;
+  background:linear-gradient(180deg,#ffbaf1,#fae7fb);
+}
+/* foil (73:16024): left:-39 top:-32 w:330 h:440, opacity:0.48 */
+.s3-foil {
+  position:absolute; left:-39px; top:-32px;
+  width:330px; height:440px;
+  opacity:0.48; pointer-events:none;
+}
+.s3-foil img { display:block; width:100%; height:100%; object-fit:cover; }
+/* ? text (73:16026): Gmarket Sans Bold 110px, #683f8c, centered */
+.s3-q {
+  position:absolute;
+  left:50%; top:50%;
+  transform:translate(-50%,-50%);
+  font-family:'Gmarket Sans','Apple SD Gothic Neo',sans-serif;
+  font-weight:700; font-size:110px; line-height:1;
+  color:#683f8c; text-align:center; white-space:nowrap;
+  animation:s3-q-bounce 1.4s linear infinite;
+}
+@keyframes s3-q-bounce {
+  /* 아래로 빠르게 떨어짐 */
+  0%   { transform:translate(-50%,-50%);                  animation-timing-function:cubic-bezier(0.55,0,1,0.45); }
+  /* 바닥 터치 → 위로 튕겨 오름 */
+  18%  { transform:translate(-50%,calc(-50% + 10px));     animation-timing-function:cubic-bezier(0,0.6,0.4,1); }
+  /* 정점 오버슈트 */
+  36%  { transform:translate(-50%,calc(-50% - 11px));     animation-timing-function:cubic-bezier(0.55,0,1,0.45); }
+  /* 두 번째 바운스 아래 */
+  50%  { transform:translate(-50%,calc(-50% + 3px));      animation-timing-function:cubic-bezier(0,0.6,0.4,1); }
+  /* 두 번째 오버슈트 (작음) */
+  62%  { transform:translate(-50%,calc(-50% - 4px));      animation-timing-function:cubic-bezier(0.55,0,1,0.45); }
+  /* 미세 진동 후 안착 */
+  72%  { transform:translate(-50%,calc(-50% + 1px));      animation-timing-function:ease-out; }
+  80%  { transform:translate(-50%,-50%); }
+  /* 잠시 정지 후 다음 사이클 */
+  100% { transform:translate(-50%,-50%); }
+}
+
+/* 점점점 순차 등장 */
+@keyframes s3-dot-fade {
+  0%, 30%  { opacity: 0; }
+  55%, 100% { opacity: 1; }
+}
+.s3-dot { opacity: 0; animation: s3-dot-fade 1.2s ease-in-out infinite; }
+.s3-dot2 { animation-delay: 0.3s; }
+.s3-dot3 { animation-delay: 0.6s; }
+
+/* CTA button (73:15884): left:16 top:706 w:343 h:56, bg:#853193 */
+.s3-btn {
+  position:absolute; left:16px; top:706px;
+  width:343px; height:56px;
+  background:#853193; border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  padding:17px 24px; box-sizing:border-box;
+}
+.s3-btn span {
+  font-family:-apple-system,'SF Pro Text',sans-serif;
+  font-weight:700; font-size:17px; line-height:22px;
+  color:#d987e7; text-align:center;
+}
+
+/* ══════════════════════════════════════════════════
+   SCREEN 4 — 결과 (73:16110)
+══════════════════════════════════════════════════ */
+#screen4 { display:none; background:linear-gradient(180deg,#0e0040 0%,#5d0f69 85%); }
+#screen4 .top-bar { background:transparent; }
+
+/* 캐릭터 이미지 (73:16112): left:-66 top:0 w:548 h:731 */
+.s4-char {
+  position:absolute; left:-66px; top:0;
+  width:548px; height:731px; pointer-events:none;
+}
+.s4-char img { display:block; width:100%; height:100%; object-fit:cover; }
+
+/* dim overlay (73:16114): top:364 w:375 h:449, centered */
+.s4-dim {
+  position:absolute;
+  left:50%; transform:translateX(-50%);
+  top:364px; width:375px; height:449px;
+  background:linear-gradient(180deg,
+    rgba(0,0,0,0)    12.14%,
+    rgba(0,0,0,0.25) 40.63%,
+    rgba(0,0,0,0.71) 55.85%,
+    rgb(0,0,0)       76.03%);
+  pointer-events:none;
+}
+
+/* title block (73:16120): top:600, w:343, centered */
+.s4-title {
+  position:absolute;
+  left:50%; transform:translateX(-50%);
+  top:600px; width:343px;
+  display:flex; flex-direction:column; align-items:center;
+  gap:0;
+}
+.s4-name, .s4-quote {
+  font-family:-apple-system,'SF Pro Text',sans-serif;
+  font-weight:700; font-size:24px; line-height:normal;
+  color:#fff; text-align:center; white-space:nowrap;
+  opacity:0;
+  transform:translateY(10px);
+  transition:opacity 0.9s ease, transform 0.9s cubic-bezier(0.22,1,0.36,1);
+}
+.s4-name.s4-show, .s4-quote.s4-show {
+  opacity:1; transform:translateY(0);
+}
+
+/* download button (73:16123): left:16 top:706 56×56 white */
+.s4-dl {
+  position:absolute; left:16px; top:706px;
+  width:56px; height:56px;
+  background:#fff; border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer;
+}
+.s4-dl img { width:24px; height:24px; display:block; }
+
+/* CTA button (73:16122): left:82 top:706 w:277 h:56 #ff22ed */
+.s4-chat {
+  position:absolute; left:82px; top:706px;
+  width:277px; height:56px;
+  background:#ff22ed; border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  padding:17px 24px; box-sizing:border-box;
+  overflow:hidden; cursor:pointer;
+}
+.s4-chat span {
+  font-family:-apple-system,'SF Pro Text',sans-serif;
+  font-weight:700; font-size:17px; line-height:22px;
+  color:#fff; text-align:center; white-space:nowrap; pointer-events:none;
+}
+/* 글로우 스윕 — s2-btn::after 와 동일 */
+.s4-chat::after {
+  content:'';
+  position:absolute; top:0; left:0;
+  width:45%; height:100%;
+  background:linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(255,255,255,0.18) 40%,
+    rgba(255,255,255,0.32) 50%,
+    rgba(255,255,255,0.18) 60%,
+    transparent 100%
+  );
+  transform:translateX(-120%);
+  animation:btn-sweep 2.4s cubic-bezier(0.4,0,0.6,1) infinite;
+  animation-delay:0.9s;
+  pointer-events:none;
+}
+
+/* toast (90:1151): white, right:18 top:10, w:339, shadow */
+.s4-toast {
+  position:absolute; top:10px; right:18px; width:339px;
+  background:#fff; border-radius:8px;
+  box-shadow:0px 3px 10px rgba(0,0,0,0.24);
+  padding:14px 16px; box-sizing:border-box;
+  display:flex; align-items:center; gap:8px;
+  z-index:200; pointer-events:none;
+  opacity:0; transform:translateY(-60px);
+  transition:transform 0.38s cubic-bezier(0.22,1,0.36,1),
+             opacity   0.3s ease;
+}
+.s4-toast.show {
+  opacity:1; transform:translateY(0); pointer-events:auto;
+}
+.s4-toast.hide {
+  opacity:0; transform:translateY(-60px);
+  transition:transform 0.28s cubic-bezier(0.4,0,0.8,1),
+             opacity   0.22s ease;
+}
+.s4-toast-icon {
+  position:relative; flex-shrink:0; width:20px; height:20px; overflow:hidden;
+}
+.s4-toast-icon img {
+  position:absolute; left:2.5px; top:4.67px; width:15px; height:10.312px;
+  display:block;
+}
+.s4-toast-text {
+  flex:1 0 0; min-width:1px;
+  font-family:-apple-system,'SF Pro Text',sans-serif;
+  font-weight:400; font-size:14px; line-height:18px;
+  color:#292930;
+}
+
+/* close btn (s4-xbtn) */
+.s4-xbtn { position:relative; flex-shrink:0; width:24px; height:24px; cursor:pointer; }
+.s4-xinner { position:absolute; top:5px; left:5px; right:5px; bottom:5px; }
+.s4-xv70,.s4-xv71 { position:absolute; inset:-7.14%; }
+.s4-xv70 img,.s4-xv71 img { display:block; width:100%; height:100%; }
+.s4-xv70 { transform:scaleX(-1); }
+.s4-xv71 { transform:scaleX(-1) rotate(90deg); }
+
+/* ══════════════════════════════════════════════════
+   SCREEN 5 — 채팅 (73:16299)
+══════════════════════════════════════════════════ */
+#screen5 { display:none; background:#000; cursor:pointer; }
+#screen5 .top-bar { background:transparent; }
+
+/* character bg (73:16308): left:-60 top:-40 w:534 h:712 */
+.s5-char {
+  position:absolute; left:-60px; top:-40px;
+  width:534px; height:712px; pointer-events:none;
+}
+.s5-char img { display:block; width:100%; height:100%; object-fit:cover; }
+
+/* dim overlay at bottom (73:16310): h:351, top→bottom gradient */
+.s5-dim {
+  position:absolute; bottom:0; left:0;
+  width:382px; height:351px;
+  background:linear-gradient(to top, #000 50.176%, rgba(0,0,0,0));
+  pointer-events:none;
+}
+
+/* chat screenshot overlay (73:16401): left:0 top:-2 w:375 h:815 */
+.s5-chat-img {
+  position:absolute; left:0; top:-2px;
+  width:375px; height:815.3px; pointer-events:none;
+}
+.s5-chat-img img { display:block; width:100%; height:100%; object-fit:cover; }
+</style>
+</head>
+<body>
+<div id="screen1" class="screen">
+
+<!-- bg (73:15523/73:15524) -->
+<div class="bg">
+  <div class="bg-img">
+    <img src="assets/644c55a2-a6dc-4d3c-8d9b-7f5ed1338db7.png" alt="">
+  </div>
+</div>
+
+<!-- dim (73:15525) -->
+<div class="dim"></div>
+
+<!-- btn (73:15526) -->
+<div class="btn">
+  <p class="btn-text">터치해서 시작</p>
+</div>
+
+<!-- progress section (73:15527 / 73:15535) -->
+<div class="progress-section">
+  <div class="progress-wrap">
+
+    <!-- progress_bg white (73:15539) -->
+    <div class="progress-bg-white"></div>
+
+    <!-- progress_bg purple (73:15540) -->
+    <div class="progress-bg-purple"></div>
+
+    <!-- progress fill (73:15541) -->
+    <div class="progress-fill"></div>
+
+    <!-- num row (73:15542) -->
+    <div class="progress-nums">
+      <!-- step 1 (73:15543) -->
+      <div class="step">
+        <div class="step-dot">
+          <img src="assets/42518be2-aa93-4cc0-8052-06619cfe5a08.png" alt="">
+        </div>
+        <span class="step-label">1</span>
+      </div>
+      <!-- step 2 (73:15549) opacity:0 -->
+      <div class="step op0">
+        <div class="step-dot">
+          <img src="assets/42518be2-aa93-4cc0-8052-06619cfe5a08.png" alt="">
+        </div>
+        <span class="step-label">2</span>
+      </div>
+      <!-- step 3 (73:15555) -->
+      <div class="step">
+        <div class="step-dot">
+          <img src="assets/42518be2-aa93-4cc0-8052-06619cfe5a08.png" alt="">
+        </div>
+        <span class="step-label">3</span>
+      </div>
+      <!-- step 4 (73:15561) opacity:0 -->
+      <div class="step op0">
+        <div class="step-dot">
+          <img src="assets/42518be2-aa93-4cc0-8052-06619cfe5a08.png" alt="">
+        </div>
+        <span class="step-label">4</span>
+      </div>
+      <!-- step 5 (73:15567) opacity:0 -->
+      <div class="step op0">
+        <div class="step-dot">
+          <img src="assets/42518be2-aa93-4cc0-8052-06619cfe5a08.png" alt="">
+        </div>
+        <span class="step-label">5</span>
+      </div>
+      <!-- step 6 (73:15573) opacity:0 -->
+      <div class="step op0">
+        <div class="step-dot">
+          <img src="assets/42518be2-aa93-4cc0-8052-06619cfe5a08.png" alt="">
+        </div>
+        <span class="step-label">6</span>
+      </div>
+      <!-- step 7 (73:15579) -->
+      <div class="step">
+        <div class="step-dot">
+          <img src="assets/3aa5f478-6551-4719-a2bd-5e0efa3ee445.png" alt="">
+        </div>
+        <span class="step-label medium">7</span>
+      </div>
+    </div>
+
+    <!-- BubbleRight / ZEM (20:17626) at left:279px — step 7 -->
+    <!--
+      data-tail-active   = imgBubbleTailBottom  (흰색 꼬리 — 활성/흰색 버블에 대응)
+      data-tail-inactive = imgBubbleTailBottom1 (자주색 꼬리 — 비활성/자주색 버블에 대응)
+    -->
+    <div class="bubble-right"
+         data-reward-step="7"
+         data-tail-active="assets/03fdcaa0-2d9b-45c1-b3cc-a6ff3fc96c38.png"
+         data-tail-inactive="assets/2d9e52a1-c5f1-463e-a88c-2d1a2ca18643.png">
+      <div class="bubble-inner">
+        <div class="bubble-content">
+          <div class="bubble-icon">
+            <img src="assets/b8a38416-704d-4ec9-add8-645a389c5b99.png" alt="">
+          </div>
+          <span class="bubble-text">1 ZEM</span>
+        </div>
+      </div>
+      <div class="bubble-tail-zem">
+        <div class="tail-rot">
+          <div class="tail-rot-zem">
+            <img class="tail-img" src="assets/2d9e52a1-c5f1-463e-a88c-2d1a2ca18643.png" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bubble_center / coin (73:15586) at left:93px — step 3 -->
+    <!--
+      data-tail-active   = imgBubbleTailBottom  (흰색 꼬리 — 활성/흰색 버블에 대응)
+      data-tail-inactive = imgBubbleTailBottom1 (자주색 꼬리 — 비활성/자주색 버블에 대응)
+    -->
+    <div class="bubble-center"
+         data-reward-step="3"
+         data-tail-active="assets/03fdcaa0-2d9b-45c1-b3cc-a6ff3fc96c38.png"
+         data-tail-inactive="assets/2d9e52a1-c5f1-463e-a88c-2d1a2ca18643.png">
+      <div class="bubble-inner">
+        <div class="bubble-content">
+          <div class="bubble-coin-icon">
+            <img src="assets/d811bfd2-9bb6-4f36-b1a4-bbac159f6f63.png" alt="">
+          </div>
+          <span class="bubble-text">10,000</span>
+        </div>
+      </div>
+      <div class="bubble-tail-center">
+        <div class="tail-rot">
+          <div class="tail-rot-center">
+            <img class="tail-img" src="assets/03fdcaa0-2d9b-45c1-b3cc-a6ff3fc96c38.png" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- title section (73:15587) -->
+<div class="title-section">
+  <div class="title-text">
+    <p class="title-h1">내 취향은 누구?!</p>
+    <p class="title-sub">마음에 드는 캐릭터와<br>7일간 대화하고 1ZEM 받기!</p>
+  </div>
+</div>
+
+<!-- Home Indicator (73:15593) -->
+<div class="home-indicator">
+  <div class="home-bar-wrap">
+    <div class="home-bar"></div>
+  </div>
+</div>
+
+<!-- TOP_인앱 (73:15594) -->
+<div class="top-bar">
+
+  <!-- Status bar (73:15595) -->
+  <div class="status-bar">
+    <div class="battery">
+      <img src="assets/d6ce1ef0-dc2e-4589-bb37-723527a39e27.png" alt="">
+    </div>
+    <div class="wifi">
+      <img src="assets/5a1722e1-dec9-41ae-a8a7-b430e7ef5656.png" alt="">
+    </div>
+    <div class="cellular">
+      <img src="assets/fa0bf6cd-ceb4-4cb9-8b3b-ef2d30496c78.png" alt="">
+    </div>
+    <span class="status-time">9:41</span>
+  </div>
+
+  <!-- Title bar (73:15596) -->
+  <div class="title-bar">
+    <!-- left icon opacity:0 -->
+    <div class="btn-icon"></div>
+    <!-- timer pill -->
+    <div class="timer-pill">
+      <div class="timer-ic-text">
+        <div class="clock-icon">
+          <img src="assets/d05bf9a5-edd1-463a-9458-af92d88efc84.png" alt="">
+        </div>
+        <span class="timer-text">이벤트 종료까지 n일 n시간 n분 남았습니다.</span>
+      </div>
+    </div>
+    <!-- right icon opacity:0 -->
+    <div class="btn-icon"></div>
+  </div>
+
+</div>
+
+</div><!-- /#screen1 -->
+
+<!-- ═══════════════════════════════════
+     SCREEN 2 — Figma 73:15712
+     ═══════════════════════════════════ -->
+<div id="screen2" class="screen">
+
+  <!-- (deco chars removed per request) -->
+
+  <!-- select indicator ▼ (73:15833) -->
+  <div class="s2-sel">
+    <div class="s2-sel-inner">
+      <img src="assets/80e06d27-a17f-49d5-a619-33a5922a15f5.png" alt="">
+      <div class="s2-sel-shine"></div>
+    </div>
+  </div>
+
+  <!-- card stage: top:247, cards centered via translateX -->
+  <div class="s2-stage" id="s2-stage">
+    <!-- cards injected by JS -->
+  </div>
+
+  <!-- title (73:15842): top:116 -->
+  <div class="s2-title">너의 이상형을 골라봐!<br>두줄까지</div>
+
+  <!-- CTA (73:15714): left:16 top:706 w:343 h:56 -->
+  <div class="s2-btn" id="s2-cta">
+    <span>이 캐릭터로 할래요</span>
+  </div>
+
+  <!-- Home Indicator -->
+  <div class="home-indicator">
+    <div class="home-bar-wrap"><div class="home-bar"></div></div>
+  </div>
+
+  <!-- TOP_인앱 (73:15845) bg:#180245 -->
+  <div class="top-bar">
+    <div class="status-bar">
+      <div class="battery"><img src="assets/b7fc4ed5-6dfc-4c8d-bd8c-71dfcdeca057.png" alt=""></div>
+      <div class="wifi"><img src="assets/fb498401-8fc6-4d03-85b0-da1ba6c4b002.png" alt=""></div>
+      <div class="cellular"><img src="assets/2d51a280-5bab-4e1e-a7a6-96ac888098bb.png" alt=""></div>
+      <span class="status-time">9:41</span>
+    </div>
+    <div class="title-bar">
+      <!-- close button (73:15847) -->
+      <div class="s2-xbtn" id="s2-xbtn">
+        <div class="s2-xinner">
+          <div class="s2-xv70"><img src="assets/ee025615-a1f2-4268-96cf-7d18a1ef0605.png" alt=""></div>
+          <div class="s2-xv71"><img src="assets/b5903439-ac7e-40ac-a9b9-161c5805f2da.png" alt=""></div>
+        </div>
+      </div>
+      <!-- right placeholder opacity:0 -->
+      <div class="btn-icon" style="opacity:0"></div>
+    </div>
+  </div>
+
+</div><!-- /#screen2 -->
+
+<!-- ═══════════════════════════════════════════════
+     SCREEN 3 — 로딩 (73:15882)
+═══════════════════════════════════════════════ -->
+<div id="screen3" class="screen">
+
+  <!-- card: 252×388, top:247, centered -->
+  <div class="s3-card">
+    <div class="s3-grad1"></div>
+    <div class="s3-grad2"></div>
+    <div class="s3-foil">
+      <img src="assets/3b54a40d-79c5-4e34-a171-fa71532a4511.png" alt="">
+    </div>
+    <p class="s3-q">?</p>
+  </div>
+
+  <!-- title (73:16048) -->
+  <div class="s3-title">캐릭터가 당신에게<br>할 말이 있대요!</div>
+
+  <!-- CTA (73:15884) -->
+  <div class="s3-btn">
+    <span>포카 출력중<span class="s3-dot">.</span><span class="s3-dot s3-dot2">.</span><span class="s3-dot s3-dot3">.</span></span>
+  </div>
+
+  <!-- Home Indicator -->
+  <div class="home-indicator">
+    <div class="home-bar-wrap"><div class="home-bar"></div></div>
+  </div>
+
+  <!-- TOP_인앱 (73:16051) bg:#180245 -->
+  <div class="top-bar">
+    <div class="status-bar">
+      <div class="battery"><img src="assets/c38cdfc8-fc3a-435b-bfea-43a414a87a18.png" alt=""></div>
+      <div class="wifi"><img src="assets/43575443-0b38-433a-83b6-38053906dd34.png" alt=""></div>
+      <div class="cellular"><img src="assets/6ed41b1c-7324-4a2b-8619-c348cf769e14.png" alt=""></div>
+      <span class="status-time">9:41</span>
+    </div>
+    <div class="title-bar">
+      <div style="width:24px;opacity:0;"></div>
+      <div style="width:24px;opacity:0;"></div>
+    </div>
+  </div>
+
+</div><!-- /#screen3 -->
+
+<!-- ═══════════════════════════════════════════════
+     SCREEN 4 — 결과 (73:16110)
+═══════════════════════════════════════════════ -->
+<div id="screen4" class="screen">
+
+  <!-- 캐릭터 이미지 (73:16112) -->
+  <div class="s4-char">
+    <img src="assets/916770ea-5d47-4b67-a5aa-2034e5cf0bd0.png" alt="">
+  </div>
+
+  <!-- dim overlay (73:16114) -->
+  <div class="s4-dim"></div>
+
+  <!-- title (73:16120): nickname + 대사 -->
+  <div class="s4-title">
+    <p class="s4-name">Nickname</p>
+    <p class="s4-quote">너가 내 주인이야.</p>
+  </div>
+
+  <!-- download btn (73:16123) -->
+  <div class="s4-dl">
+    <img src="assets/c3a7d4d1-362d-45e5-845a-582d02f714e0.png" alt="">
+  </div>
+
+  <!-- CTA (73:16122) -->
+  <div class="s4-chat">
+    <span>대화하러 가기</span>
+  </div>
+
+  <!-- toast (90:1151) -->
+  <div class="s4-toast" id="s4-toast">
+    <div class="s4-toast-icon">
+      <img src="assets/80a32fa3-8a09-407f-92bc-9ac6542206c6.png" alt="">
+    </div>
+    <p class="s4-toast-text">저장 완료</p>
+  </div>
+
+  <!-- Home Indicator -->
+  <div class="home-indicator">
+    <div class="home-bar-wrap"><div class="home-bar"></div></div>
+  </div>
+
+  <!-- TOP_인앱 (73:16263) transparent -->
+  <div class="top-bar">
+    <div class="status-bar">
+      <div class="battery"><img src="assets/a5d62d86-7c14-4a42-9643-98415015cfdc.png" alt=""></div>
+      <div class="wifi"><img src="assets/eb4e3b42-c6eb-4790-9d2f-d3fd9d75be43.png" alt=""></div>
+      <div class="cellular"><img src="assets/59a9cf2f-d1a0-45e3-beea-b338b3966bf8.png" alt=""></div>
+      <span class="status-time">9:41</span>
+    </div>
+    <div class="title-bar">
+      <div class="s4-xbtn" id="s4-xbtn">
+        <div class="s4-xinner">
+          <div class="s4-xv70"><img src="assets/98c3ea40-30f1-4910-b2e2-ccdf819c770f.png" alt=""></div>
+          <div class="s4-xv71"><img src="assets/2aad7bf8-3ce4-4e12-b4de-f36c6eb0ed73.png" alt=""></div>
+        </div>
+      </div>
+      <div style="width:24px;opacity:0;"></div>
+    </div>
+  </div>
+
+</div><!-- /#screen4 -->
+
+<!-- ═══════════════════════════════════════════════
+     SCREEN 5 — 채팅 (73:16299)
+     터치 어디서나 → screen1
+═══════════════════════════════════════════════ -->
+<div id="screen5" class="screen">
+
+  <!-- character bg -->
+  <div class="s5-char">
+    <img src="assets/2b2e289e-ace9-4917-8f2d-0e08e604ad8b.png" alt="">
+  </div>
+
+  <!-- dim overlay (bottom) -->
+  <div class="s5-dim"></div>
+
+  <!-- chat screenshot (전체 오버레이) -->
+  <div class="s5-chat-img">
+    <img src="assets/3dc58a50-1921-4931-bf8e-ab556732fa05.png" alt="">
+  </div>
+
+  <!-- Home Indicator -->
+  <div class="home-indicator">
+    <div class="home-bar-wrap"><div class="home-bar"></div></div>
+  </div>
+
+  <!-- TOP_인앱 (73:16403) transparent -->
+  <div class="top-bar">
+    <div class="status-bar">
+      <div class="battery"><img src="assets/767147a7-a7c6-4228-8bfb-0a66c45f2cd3.png" alt=""></div>
+      <div class="wifi"><img src="assets/46659698-fb41-413b-937b-bb6b575beddb.png" alt=""></div>
+      <div class="cellular"><img src="assets/ccba7242-2fb4-4535-b5d0-f04ce331f565.png" alt=""></div>
+      <span class="status-time">9:41</span>
+    </div>
+    <div class="title-bar">
+      <div class="s4-xbtn" id="s5-xbtn">
+        <div class="s4-xinner">
+          <div class="s4-xv70"><img src="assets/393c0bc7-56d9-48b8-8c75-bfd6e10644bc.png" alt=""></div>
+          <div class="s4-xv71"><img src="assets/fe869259-c847-4194-ba5c-62c94b62fc3c.png" alt=""></div>
+        </div>
+      </div>
+      <div style="width:24px;opacity:0;"></div>
+    </div>
+  </div>
+
+</div><!-- /#screen5 -->
+
+<script>
+// ─────────────────────────────────────────────
+//  상태값: 1 / 3 / 7 중 하나로 변경
+// ─────────────────────────────────────────────
+const progressState = 3;
+
+// ─────────────────────────────────────────────
+//  Progress bar 상수 (Figma 측정값)
+//  track width  : 328px
+//  step dot size: 22px
+//  total steps  : 7
+//  gap          : (328 - 7×22) / (7-1) = 29px
+//  step i(0-based) center offset = i × (22+29) + 11
+// ─────────────────────────────────────────────
+const TOTAL_STEPS   = 7;
+const TRACK_WIDTH   = 328;   // px
+const DOT_SIZE      = 22;    // px
+const GAP           = (TRACK_WIDTH - TOTAL_STEPS * DOT_SIZE) / (TOTAL_STEPS - 1); // 29px
+const TRACK_LEFT    = 24;    // px — progress-fill left edge (= track left edge)
+
+function getStepCenterOffset(zeroBasedIndex) {
+  return zeroBasedIndex * (DOT_SIZE + GAP) + DOT_SIZE / 2;
+}
+
+function calcFillWidth(state) {
+  // fill reaches the right edge of the target step dot
+  return getStepCenterOffset(state - 1) + DOT_SIZE / 2;
+}
+
+function applyProgressState(state) {
+  // 1. 프로그레스 fill 길이 업데이트
+  const fill = document.querySelector('.progress-fill');
+  const fillWidth = calcFillWidth(state);
+  fill.style.left      = TRACK_LEFT + 'px';
+  fill.style.transform = 'none';
+  fill.style.width     = fillWidth + 'px';
+
+  // 2. 보상 말풍선 활성 / 비활성 전환
+  document.querySelectorAll('[data-reward-step]').forEach(function(bubble) {
+    const step     = parseInt(bubble.dataset.rewardStep, 10);
+    const inner    = bubble.querySelector('.bubble-inner');
+    const text     = bubble.querySelector('.bubble-text');
+    const tailImg  = bubble.querySelector('.tail-img');
+    const isActive = step <= state;
+
+    // bubble-inner background
+    inner.classList.toggle('active',   isActive);
+    inner.classList.toggle('inactive', !isActive);
+
+    // bubble text color
+    text.classList.toggle('active-text',   isActive);
+    text.classList.toggle('inactive-text', !isActive);
+
+    // 꼬리 이미지 — 원본 Figma 에셋 그대로, src만 교체 (크기·위치·회전 변경 없음)
+    // 활성: imgBubbleTailBottom(흰색), 비활성: imgBubbleTailBottom1(자주색)
+    if (tailImg) {
+      tailImg.src = isActive ? bubble.dataset.tailActive : bubble.dataset.tailInactive;
+    }
+  });
+}
+
+// 페이지 로드 시 즉시 적용
+applyProgressState(progressState);
+
+// ─────────────────────────────────────────────
+//  Screen toggle
+// ─────────────────────────────────────────────
+document.querySelector('.btn').addEventListener('click', function () {
+  document.getElementById('screen1').style.display = 'none';
+  document.getElementById('screen2').style.display = 'block';
+  carouselInit();
+});
+document.getElementById('s2-xbtn').addEventListener('click', function () {
+  document.getElementById('screen2').style.display = 'none';
+  document.getElementById('screen1').style.display = 'block';
+});
+
+// screen2 CTA → screen3 → screen4 (자동 전환)
+document.getElementById('s2-cta').addEventListener('click', function () {
+  document.getElementById('screen2').style.display = 'none';
+  document.getElementById('screen3').style.display = 'block';
+  setTimeout(showScreen4, 4000);
+});
+
+function showScreen4() {
+  document.getElementById('screen3').style.display = 'none';
+  var s4 = document.getElementById('screen4');
+  s4.style.display = 'block';
+
+  // nickname 등장
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() {
+      document.querySelector('.s4-name').classList.add('s4-show');
+      // 0.5초 후 대사 등장
+      setTimeout(function() {
+        document.querySelector('.s4-quote').classList.add('s4-show');
+      }, 500);
+    });
+  });
+}
+
+// screen4 X → screen1
+// 다운로드 버튼 → 토스트
+var s4ToastTimer = null;
+document.querySelector('.s4-dl').addEventListener('click', function () {
+  var toast = document.getElementById('s4-toast');
+  if (s4ToastTimer) { clearTimeout(s4ToastTimer); s4ToastTimer = null; }
+  toast.classList.remove('show', 'hide');
+  void toast.offsetWidth; // reflow
+  toast.classList.add('show');
+  s4ToastTimer = setTimeout(function () {
+    toast.classList.remove('show');
+    toast.classList.add('hide');
+    s4ToastTimer = null;
+  }, 1000);
+});
+
+document.getElementById('s4-xbtn').addEventListener('click', function () {
+  document.getElementById('screen4').style.display = 'none';
+  document.querySelector('.s4-name').classList.remove('s4-show');
+  document.querySelector('.s4-quote').classList.remove('s4-show');
+  document.getElementById('screen1').style.display = 'block';
+});
+
+// screen4 "대화하러 가기" → screen5
+document.querySelector('.s4-chat').addEventListener('click', function () {
+  document.getElementById('screen4').style.display = 'none';
+  document.getElementById('screen5').style.display = 'block';
+});
+
+// screen5: 화면 어디든 터치 → screen1
+document.getElementById('screen5').addEventListener('click', function () {
+  document.getElementById('screen5').style.display = 'none';
+  document.querySelector('.s4-name').classList.remove('s4-show');
+  document.querySelector('.s4-quote').classList.remove('s4-show');
+  document.getElementById('screen1').style.display = 'block';
+});
+
+// ─────────────────────────────────────────────
+//  Carousel — iOS 네이티브 스타일
+//  translateX + scale, transform-origin:center
+// ─────────────────────────────────────────────
+var CIMG = 'assets/0ab2cd6b-ce91-42d5-93af-3ec8c7de4f94.png';
+var CFI1 = 'assets/a2c48974-fbd2-4c79-a41b-abf62cf7de08.png';
+var CFI2 = 'assets/ee084c00-6e23-4b13-8042-f32c2084b7e7.png';
+var CFI3 = 'assets/80e06d27-a17f-49d5-a619-33a5922a15f5.png';
+
+var CARDS_DATA = [
+  { name: '차도남 선배',    desc: '왜 자꾸 신경쓰이게 하는 건데.\n이러지 마.' },
+  { name: '싸가지 일진남',  desc: '하씨.. 너 뭔데 계속\n신경쓰이게 하냐.' },
+  { name: '순정남 반장',    desc: '너만 보면 왜 이렇게\n마음이 설레는 걸까.' },
+  { name: '냉혹한 재벌남',  desc: '관심 없어. 근데 왜\n계속 눈에 띄는 거야.' },
+  { name: '설렘의 왕자',    desc: '네가 날 피하면\n더 쫓아갈 거야.' },
+  { name: '순수 소년',      desc: '나 너 좋아하는 것\n같아. 어떡하지?' },
+  { name: '늑대 길들이기',  desc: '너가 내 주인이야.\n어딜 가든 따라가.' },
+  { name: '비밀 천재남',    desc: '... 너만 알고 있어.\n내 진짜 모습.' },
+  { name: '선한 눈의 남자', desc: '솔직히 말할게.\n너 없으면 안 되겠어.' },
+];
+
+var C_PITCH = 260;
+var C_SCALE = 0.93;
+var C_OPA   = 0.78;
+
+var cIdx      = 0;
+var cDrag     = 0;
+var cDragging = false;
+var cBuilt    = false;
+var VEL_BUF   = [];
+
+function cPushVel(v) {
+  var now = Date.now();
+  VEL_BUF.push({ v: v, t: now });
+  while (VEL_BUF.length > 1 && now - VEL_BUF[0].t > 80) VEL_BUF.shift();
+}
+function cRollingVel() {
+  if (!VEL_BUF.length) return 0;
+  var sum = 0, w = 0;
+  for (var i = 0; i < VEL_BUF.length; i++) {
+    var weight = i + 1;
+    sum += VEL_BUF[i].v * weight; w += weight;
+  }
+  return sum / w;
+}
+
+function makeCardHTML(d) {
+  return '<div class="s2-chr"><img src="'+ CIMG +'" alt=""></div>' +
+    '<div class="s2-dim"></div>' +
+    '<div class="s2-f s2-f1"><img src="'+ CFI1 +'" alt=""></div>' +
+    '<div class="s2-f s2-f2"><img src="'+ CFI2 +'" alt=""></div>' +
+    '<div class="s2-f s2-f3"><img src="'+ CFI3 +'" alt=""></div>' +
+    '<div class="s2-bdr"></div>' +
+    '<div class="s2-sh s2-sh1"><div class="s2-shb"></div></div>' +
+    '<div class="s2-sh s2-sh2"><div class="s2-shb"></div></div>' +
+    '<div class="s2-info">' +
+      '<div class="s2-pill"><span>'+ d.name +'</span></div>' +
+      '<p class="s2-desc">'+ d.desc.replace(/\n/g,'<br>') +'</p>' +
+    '</div>';
+}
+
+// Circular slot for card i given current center cIdx
+// Returns slot (-2~+2) or null if the card should be hidden
+function cCircularSlot(i, N) {
+  var off = ((i - cIdx) % N + N) % N;
+  if (off > N / 2) off -= N;
+  return (Math.abs(off) <= 2) ? off : null;
+}
+
+/*
+  Single render — drag mode or snap mode.
+  isDragging=true  → transition:none
+  isDragging=false → spring transition
+*/
+function cApply(cards, isDragging) {
+  var N    = cards.length;
+  var drag = cDrag;
+
+  cards.forEach(function(c, i) {
+    var slot = cCircularSlot(i, N);
+
+    // hide cards not in visible range
+    if (slot === null) {
+      c.style.transition   = 'none';
+      c.style.opacity      = '0';
+      c.style.pointerEvents= 'none';
+      c.classList.remove('is-center', 'is-side');
+      return;
+    }
+
+    // position: slot × pitch + drag (center card follows 1:1, others follow proportionally)
+    var pull = isDragging ? Math.pow(0.5, Math.abs(slot)) : 0;
+    var tx   = slot * C_PITCH + drag * (slot === 0 ? 1 : pull * 0.45);
+
+    // normalised distance for scale/opacity
+    var t  = Math.min(Math.abs(tx) / C_PITCH, 1);
+    var sc = 1 - t * (1 - C_SCALE);
+    var op = 1 - t * (1 - C_OPA);
+
+    // subtle fixed rotateY on side cards (7deg); center leans slightly during drag (max 3deg)
+    var ry = slot !== 0 ? (slot < 0 ? 7 : -7) : 0;
+    if (isDragging && slot === 0) ry = Math.max(-3, Math.min(3, -drag * 0.016));
+
+    if (!isDragging) {
+      c.style.transition = 'transform 400ms cubic-bezier(0.22,1,0.36,1), opacity 300ms ease';
+    } else {
+      c.style.transition = 'none';
+    }
+
+    c.style.transform    = 'translateX('+tx+'px) scale('+sc+') rotateY('+ry+'deg)';
+    c.style.opacity      = String(Math.max(0, op));
+    c.style.zIndex       = Math.abs(slot) === 0 ? 3 : Math.abs(slot) === 1 ? 2 : 1;
+    c.style.pointerEvents= '';
+    c.classList.toggle('is-center', slot === 0);
+    c.classList.toggle('is-side',   slot !== 0);
+  });
+}
+
+function cBounceIndicator() {
+  var sel = document.querySelector('.s2-sel');
+  if (!sel) return;
+  sel.classList.remove('bouncing');
+  void sel.offsetWidth;
+  sel.classList.add('bouncing');
+  sel.addEventListener('animationend', function(){ sel.classList.remove('bouncing'); }, { once: true });
+}
+
+function carouselInit() {
+  if (cBuilt) return;
+  cBuilt = true;
+
+  var stage  = document.getElementById('s2-stage');
+  var lastX  = 0, lastT = 0, startX = 0, rafId = null;
+
+  CARDS_DATA.forEach(function(d) {
+    var el = document.createElement('div');
+    el.className = 's2-card';
+    el.innerHTML = makeCardHTML(d);
+    stage.appendChild(el);
+  });
+
+  var cards = Array.from(stage.querySelectorAll('.s2-card'));
+  var N = cards.length;
+  cApply(cards, false);
+
+  // Side card tap to jump (circular)
+  stage.addEventListener('click', function(e) {
+    if (Math.abs(cDrag) > 6) return;
+    var card = e.target.closest('.s2-card');
+    if (!card) return;
+    var i    = cards.indexOf(card);
+    var slot = cCircularSlot(i, N);
+    if (slot !== null && slot !== 0) {
+      cIdx = ((cIdx + slot) % N + N) % N;
+      cDrag = 0; VEL_BUF = [];
+      cApply(cards, false);
+      cBounceIndicator();
+    }
+  });
+
+  function onStart(x) {
+    cDragging = true;
+    startX = x - cDrag;
+    lastX  = x; lastT = Date.now();
+    VEL_BUF = [];
+    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+  }
+
+  function onMove(x) {
+    if (!cDragging) return;
+    var now = Date.now();
+    cPushVel((x - lastX) / Math.max(now - lastT, 1));
+    lastX = x; lastT = now;
+    cDrag = x - startX;
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(function() {
+      cApply(cards, true);
+      rafId = null;
+    });
+  }
+
+  function onEnd() {
+    if (!cDragging) return;
+    cDragging = false;
+    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+
+    var proj = cDrag + cRollingVel() * 160;
+    if      (proj < -(C_PITCH * 0.22)) cIdx = (cIdx + 1) % N;
+    else if (proj >  (C_PITCH * 0.22)) cIdx = (cIdx - 1 + N) % N;
+
+    cDrag = 0; VEL_BUF = [];
+    cApply(cards, false);
+    cBounceIndicator();
+  }
+
+  stage.addEventListener('touchstart',  function(e){ onStart(e.touches[0].clientX); }, { passive: true });
+  stage.addEventListener('touchmove',   function(e){ onMove(e.touches[0].clientX);  }, { passive: true });
+  stage.addEventListener('touchend',    onEnd);
+  stage.addEventListener('touchcancel', onEnd);
+  stage.addEventListener('mousedown',   function(e){ onStart(e.clientX); e.preventDefault(); });
+  document.addEventListener('mousemove', function(e){ if (cDragging) onMove(e.clientX); });
+  document.addEventListener('mouseup',   onEnd);
+}
+
+// ─────────────────────────────────────────────
+//  Marquee DOM 셋업
+//  — pill 디자인 변경 없음
+//  — .timer-ic-text 를 2벌 복제해 .timer-marquee-track 으로 감쌈
+//  — 두 아이템에 동일한 paddingRight 를 줘서 translateX(-50%) 가
+//    정확히 1벌 너비만큼 이동 → 끊김 없는 루프 보장
+// ─────────────────────────────────────────────
+(function () {
+  var pill   = document.querySelector('.timer-pill');
+  var icText = pill.querySelector('.timer-ic-text');
+  var clone  = icText.cloneNode(true);
+
+  // 두 아이템이 동일 너비여야 -50% 가 정확히 반복 지점에 도달
+  var spacer = '56px';
+  icText.style.paddingRight = spacer;
+  clone.style.paddingRight  = spacer;
+
+  var track = document.createElement('div');
+  track.className = 'timer-marquee-track';
+  track.appendChild(icText);
+  track.appendChild(clone);
+  pill.appendChild(track);
+})();
+</script>
+</body>
+</html>

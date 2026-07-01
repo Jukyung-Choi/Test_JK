@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>내 취향은 누구?! — Case2</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  margin:0; padding:0; width:100%; min-height:100vh;
+  background:#000;
+  display:flex; align-items:center; justify-content:center;
+}
+
+.screen {
+  width:375px; height:812px;
+  position:relative; overflow:hidden;
+  background:linear-gradient(180deg,#0e0040 0%,#5d0f69 100%);
+  flex-shrink:0;
+}
+
+/* ── bg ── */
+.bg { position:absolute; top:-1px; left:0; width:375px; height:814px; }
+.bg-img { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:375px; height:814px; }
+.bg-img img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; pointer-events:none; display:block; }
+
+/* ── bottom gradient dim ── */
+.dim {
+  position:absolute; left:50%; transform:translateX(-50%);
+  top:364px; width:375px; height:449px;
+  background:linear-gradient(180deg,rgba(177,0,173,0) 11.965%,rgba(177,0,173,0.25) 35.667%,rgba(76,0,75,0.45) 60.496%,rgb(0,0,0) 79.566%);
+}
+
+/* ── screen1 CTA btn ── */
+.btn {
+  position:absolute; left:16px; top:706px; width:343px; height:56px;
+  display:flex; gap:8px; align-items:center; justify-content:center;
+  padding:17px 24px; border-radius:8px; cursor:pointer;
+}
+.btn-text {
+  flex:1 0 0; min-width:1px;
+  font-family:-apple-system,'SF Pro Text',sans-serif; font-weight:700; font-size:17px; line-height:22px;
+  color:#999; text-align:center; word-break:break-word;
+  animation:cta-blink 1.8s ease-in-out infinite;
+}
+
+/* ── progress ── */
+.progress-section { position:absolute; bottom:121px; left:0; width:375px; display:flex; flex-direction:column; gap:20px; align-items:center; justify-content:flex-end; }
+.progress-wrap { position:relative; height:78px; width:100%; flex-shrink:0; }
+.progress-bg-white { position:absolute; left:50%; transform:translateX(calc(-50% + 0.5px)); top:38px; width:328px; height:22px; border-radius:100px; background:#fff; }
+.progress-bg-purple { position:absolute; left:50%; transform:translateX(calc(-50% + 0.5px)); top:38px; width:328px; height:22px; border-radius:100px; background:#6f006d; }
+.progress-fill { position:absolute; top:38px; left:24px; width:124px; height:22px; border-radius:100px; background:linear-gradient(90deg,#d300b3,#ff19a3); }
+.progress-nums { position:absolute; left:24px; top:38px; width:328px; display:flex; align-items:center; justify-content:space-between; }
+.step { display:flex; flex-direction:column; gap:2px; align-items:center; width:22px; flex-shrink:0; position:relative; }
+.step.op0 { opacity:0; }
+.step-dot { position:relative; flex-shrink:0; width:22px; height:22px; }
+.step-dot img { position:absolute; inset:0; width:100%; height:100%; display:block; }
+.step-label { font-family:-apple-system,'SF Pro Text',sans-serif; font-weight:700; font-size:11px; line-height:16px; text-align:center; color:#fff; white-space:nowrap; flex-shrink:0; position:relative; word-break:break-word; }
+.step-label.medium { font-weight:500; }
+
+/* ── bubbles ── */
+.bubble-right { position:absolute; left:279px; top:0; height:32px; display:flex; flex-direction:column; align-items:flex-end; }
+.bubble-inner { display:flex; height:28px; align-items:center; justify-content:flex-end; padding:0 10px; border-radius:38px; flex-shrink:0; position:relative; }
+.bubble-inner.active   { background:#840081; }
+.bubble-inner.inactive { background:#fff; }
+.bubble-content { display:flex; gap:4px; align-items:center; justify-content:flex-end; flex-shrink:0; position:relative; }
+.bubble-icon { position:relative; flex-shrink:0; width:14px; height:14px; }
+.bubble-icon img { position:absolute; inset:0; width:100%; height:100%; display:block; }
+.bubble-text { font-family:-apple-system,'SF Pro Text',sans-serif; font-weight:700; font-size:14px; line-height:18px; white-space:nowrap; position:relative; flex-shrink:0; word-break:break-word; }
+.bubble-text.active-text   { color:#fff; }
+.bubble-text.inactive-text { color:#292930; }
+.bubble-tail-zem { position:absolute; left:calc(50% + 22px); transform:translateX(-50%); top:28px; width:8px; height:5px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.tail-rot { transform:rotate(-90deg); flex-shrink:0; }
+.tail-rot-zem { position:relative; width:5px; height:8px; }
+.tail-rot-zem img { position:absolute; left:12.02%; top:0; right:0; bottom:0; display:block; max-width:none; height:100%; width:calc(100% - 12.02%); }
+.bubble-center { position:absolute; left:93px; top:0; height:32px; display:flex; flex-direction:column; align-items:flex-end; }
+.bubble-coin-icon { position:relative; flex-shrink:0; width:14px; height:14px; }
+.bubble-coin-icon img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; pointer-events:none; }
+.bubble-tail-center { position:absolute; left:50%; transform:translateX(-50%); top:28px; width:8px; height:5px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.tail-rot-center { position:relative; width:5px; height:8px; }
+.tail-rot-center img { position:absolute; left:12.02%; top:0; right:0; bottom:0; display:block; max-width:none; height:100%; width:calc(100% - 12.02%); }
+
+/* ── title section ── */
+.title-section { position:absolute; bottom:233px; left:50%; transform:translateX(-50%); width:375px; display:flex; flex-direction:column; gap:18px; align-items:flex-start; }
+.title-text { display:flex; flex-direction:column; gap:8px; align-items:center; width:100%; text-align:center; color:#fff; position:relative; flex-shrink:0; word-break:break-word; }
+.title-h1 { font-family:-apple-system,'SF Pro',sans-serif; font-weight:700; font-size:38px; line-height:normal; text-transform:capitalize; color:#fff; width:100%; position:relative; flex-shrink:0; }
+.title-sub { font-family:-apple-system,'SF Pro Text',sans-serif; font-weight:500; font-size:14px; line-height:20px; color:#fff; width:100%; position:relative; flex-shrink:0; }
+
+/* ── home indicator ── */
+.home-indicator { position:absolute; bottom:0; left:0; width:375px; height:34px; }
+.home-bar-wrap { position:absolute; bottom:9px; left:50%; transform:translateX(calc(-50% + 0.5px)); width:134px; height:5px; }
+.home-bar { position:absolute; left:50%; transform:translateX(-50%); bottom:0; width:134px; height:5px; background:#000; border-radius:100px; }
+
+/* ── top bar ── */
+.top-bar { position:absolute; top:0; left:0; right:0; background:#000; display:flex; flex-direction:column; align-items:flex-start; }
+.status-bar { height:44px; position:relative; flex-shrink:0; width:100%; }
+.battery { position:absolute; right:14.34px; top:17.33px; width:24.328px; height:11.333px; }
+.battery img { position:absolute; inset:0; width:100%; height:100%; display:block; }
+.wifi { position:absolute; right:43.67px; top:39.39%; bottom:35.61%; width:15.333px; }
+.wifi img { position:absolute; inset:0; width:100%; height:100%; display:block; }
+.cellular { position:absolute; right:64px; top:40.15%; bottom:35.6%; width:17px; }
+.cellular img { position:absolute; inset:0; width:100%; height:100%; display:block; }
+.status-time { position:absolute; left:48px; transform:translateX(-50%); top:calc(50% - 7.67px); width:54px; font-family:-apple-system,'SF Pro Text',sans-serif; font-weight:600; font-size:15px; line-height:normal; text-align:center; color:#fff; letter-spacing:-0.3px; word-break:break-word; }
+.title-bar { display:flex; height:52px; align-items:center; justify-content:space-between; padding:0 16px; position:relative; flex-shrink:0; width:100%; }
+.btn-icon { position:relative; flex-shrink:0; width:24px; height:24px; opacity:0; }
+.timer-pill { background:rgba(154,154,154,0.5); display:flex; gap:20px; height:28px; align-items:center; overflow:hidden; padding-left:8px; border-radius:100px; flex-shrink:0; width:230px; position:relative; }
+.timer-ic-text { display:flex; gap:4px; align-items:center; flex-shrink:0; position:relative; }
+.clock-icon { position:relative; flex-shrink:0; width:14px; height:14px; opacity:0.8; }
+.clock-icon img { position:absolute; top:7.15%; left:7.15%; right:7.14%; bottom:7.14%; display:block; width:calc(100% - 14.29%); height:calc(100% - 14.29%); max-width:none; }
+.timer-text { font-family:-apple-system,'SF Pro Text',sans-serif; font-weight:500; font-size:11px; line-height:16px; color:#fff; opacity:0.8; white-space:nowrap; flex-shrink:0; position:relative; word-break:break-word; }
+
+/* ── shared close btn ── */
+.xbtn { position:relative; flex-shrink:0; width:24px; height:24px; cursor:pointer; }
+.xinner { position:absolute; top:5px; left:5px; right:5px; bottom:5px; }
+.xv70,.xv71 { position:absolute; inset:-7.14%; }
+.xv70 img,.xv71 img { display:block; width:100%; height:100%; }
+.xv70 { transform:scaleX(-1); }
+.xv71 { transform:scaleX(-1) rotate(90deg); }
+
+/* ── animations ── */
+@keyframes timer-marquee { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+.timer-marquee-track { display:flex; align-items:center; width:max-content; animation:timer-marquee 10s linear infinite; }
+@keyframes btn-sweep { 0% { transform:translateX(-120%); } 100% { transform:translateX(220%); } }
+@keyframes cta-blink { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+
+/* ══ SCREEN 1 ══ */
+#screen1 { display:block; }
+
+/* ══ SCREEN 2 — Figma 73:16631 ══ */
+#screen2 { display:none; }
+
+/* black overlay (top:96 = 44 status + 52 nav) */
+.s2c-black-dim {
+  position:absolute; left:0; top:96px; width:375px; height:717px;
+  background:rgba(0,0,0,0.85); pointer-events:none; z-index:2;
+}
+
+/* completion center content */
+.s2c-center {
+  position:absolute; left:50%; top:50%;
+  transform:translate(-50%,-50%);
+  width:340px;
+  display:flex; flex-direction:column; gap:14px; align-items:center;
+  z-index:3;
+}
+
+/* entrance animation — 툴팁 먼저, 텍스트 겹쳐서 등장 */
+.s2c-tooltip,
+.s2c-title-wrap {
+  opacity:0; transform:translateY(6px);
+  transition:opacity 0.45s ease, transform 0.45s cubic-bezier(0.22,1,0.36,1);
+}
+.s2c-tooltip.s2c-show,
+.s2c-title-wrap.s2c-show {
+  opacity:1; transform:translateY(0);
+}
+
+/* speech bubble tooltip */
+.s2c-tooltip { display:flex; flex-direction:column; align-items:center; flex-shrink:0; }
+.s2c-tooltip-box { background:#fff; display:flex; flex-direction:column; align-items:flex-start; padding:8px 12px; border-radius:8px; flex-shrink:0; }
+.s2c-tooltip-box p { font-family:-apple-system,'SF Pro Text',sans-serif; font-weight:500; font-size:13px; line-height:19px; color:#000; white-space:nowrap; text-align:center; }
+.s2c-tooltip-arrow { display:flex; flex-direction:column; align-items:flex-start; padding:0 20px; flex-shrink:0; }
+.s2c-arrow { position:relative; width:10px; height:8px; flex-shrink:0; }
+.s2c-arrow img { position:absolute; top:0; left:0; right:0; bottom:11.08%; display:block; width:100%; height:88.92%; }
+
+/* completion text */
+.s2c-title-wrap { display:flex; flex-direction:column; gap:18px; align-items:flex-start; flex-shrink:0; width:100%; }
+.s2c-title-inner { display:flex; flex-direction:column; gap:8px; align-items:center; flex-shrink:0; width:100%; }
+.s2c-msg { font-family:-apple-system,'SF Pro',sans-serif; font-weight:700; font-size:22px; line-height:30px; text-align:center; color:#fff; width:100%; word-break:break-word; }
+
+/* ══ SCREEN 5 — 채팅 ══ */
+#screen5 { display:none; background:#000; cursor:pointer; }
+#screen5 .top-bar { background:transparent; }
+.s5-char { position:absolute; left:-60px; top:-40px; width:534px; height:712px; pointer-events:none; }
+.s5-char img { display:block; width:100%; height:100%; object-fit:cover; }
+.s5-dim { position:absolute; bottom:0; left:0; width:382px; height:351px; background:linear-gradient(to top,#000 50.176%,rgba(0,0,0,0)); pointer-events:none; }
+.s5-chat-img { position:absolute; left:0; top:-2px; width:375px; height:815.3px; pointer-events:none; }
+.s5-chat-img img { display:block; width:100%; height:100%; object-fit:cover; }
+
+/* pink CTA */
+.s2c-btn {
+  position:absolute; left:16px; top:706px; width:343px; height:56px;
+  background:#ff22ed; border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  padding:17px 24px; box-sizing:border-box; gap:8px;
+  cursor:pointer; border:none; outline:none; overflow:hidden;
+  z-index:3;
+}
+.s2c-btn span {
+  flex:1 0 0; min-width:1px;
+  font-family:-apple-system,'SF Pro Text',sans-serif; font-weight:700; font-size:17px; line-height:22px;
+  color:#fff; text-align:center; word-break:break-word; pointer-events:none;
+}
+.s2c-btn::after {
+  content:''; position:absolute; top:0; left:0; width:45%; height:100%;
+  background:linear-gradient(105deg,transparent 0%,rgba(255,255,255,0.18) 40%,rgba(255,255,255,0.32) 50%,rgba(255,255,255,0.18) 60%,transparent 100%);
+  transform:translateX(-120%);
+  animation:btn-sweep 2.4s cubic-bezier(0.4,0,0.6,1) infinite;
+  animation-delay:0.6s; pointer-events:none;
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ SCREEN 1 ═══════════════ -->
+<div id="screen1" class="screen">
+
+<div class="bg"><div class="bg-img"><img src="assets/644c55a2-a6dc-4d3c-8d9b-7f5ed1338db7.png" alt=""></div></div>
+<div class="dim"></div>
+
+<div class="btn"><p class="btn-text">터치해서 시작</p></div>
+
+<div class="progress-section">
+  <div class="progress-wrap">
+    <div class="progress-bg-white"></div>
+    <div class="progress-bg-purple"></div>
+    <div class="progress-fill"></div>
+    <div class="progress-nums">
+      <div class="step"><div class="step-dot"><img src="assets/42518be2-aa93-4cc0-8052-06619cfe5a08.png" alt=""></div><span class="step-label">1</span></div>
+      <div class="step op0"><div class="step-dot"><img src="assets/42518be2-aa93-4cc0-8052-06619cfe5a08.png" alt=""></div><span class="step-label">2</span></div>
+      <div class="step"><div class="step-dot"><img src="assets/42518be2-aa93-4cc0-8052-06619cfe5a08.png" alt=""></div><span class="step-label">3</span></div>
+      <div class="step op0"><div class="step-dot"><img src="assets/42518be2-aa93-4cc0-8052-06619cfe5a08.png" alt=""></div><span class="step-label">4</span></div>
+      <div class="step op0"><div class="step-dot"><img src="assets/42518be2-aa93-4cc0-8052-06619cfe5a08.png" alt=""></div><span class="step-label">5</span></div>
+      <div class="step op0"><div class="step-dot"><img src="assets/42518be2-aa93-4cc0-8052-06619cfe5a08.png" alt=""></div><span class="step-label">6</span></div>
+      <div class="step"><div class="step-dot"><img src="assets/3aa5f478-6551-4719-a2bd-5e0efa3ee445.png" alt=""></div><span class="step-label medium">7</span></div>
+    </div>
+    <div class="bubble-right" data-reward-step="7"
+         data-tail-active="assets/03fdcaa0-2d9b-45c1-b3cc-a6ff3fc96c38.png"
+         data-tail-inactive="assets/2d9e52a1-c5f1-463e-a88c-2d1a2ca18643.png">
+      <div class="bubble-inner">
+        <div class="bubble-content">
+          <div class="bubble-icon"><img src="assets/b8a38416-704d-4ec9-add8-645a389c5b99.png" alt=""></div>
+          <span class="bubble-text">1 ZEM</span>
+        </div>
+      </div>
+      <div class="bubble-tail-zem"><div class="tail-rot"><div class="tail-rot-zem"><img class="tail-img" src="assets/2d9e52a1-c5f1-463e-a88c-2d1a2ca18643.png" alt=""></div></div></div>
+    </div>
+    <div class="bubble-center" data-reward-step="3"
+         data-tail-active="assets/03fdcaa0-2d9b-45c1-b3cc-a6ff3fc96c38.png"
+         data-tail-inactive="assets/2d9e52a1-c5f1-463e-a88c-2d1a2ca18643.png">
+      <div class="bubble-inner">
+        <div class="bubble-content">
+          <div class="bubble-coin-icon"><img src="assets/d811bfd2-9bb6-4f36-b1a4-bbac159f6f63.png" alt=""></div>
+          <span class="bubble-text">10,000</span>
+        </div>
+      </div>
+      <div class="bubble-tail-center"><div class="tail-rot"><div class="tail-rot-center"><img class="tail-img" src="assets/03fdcaa0-2d9b-45c1-b3cc-a6ff3fc96c38.png" alt=""></div></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="title-section">
+  <div class="title-text">
+    <p class="title-h1">내 취향은 누구?!</p>
+    <p class="title-sub">마음에 드는 캐릭터와<br>7일간 대화하고 1ZEM 받기!</p>
+  </div>
+</div>
+
+<div class="home-indicator"><div class="home-bar-wrap"><div class="home-bar"></div></div></div>
+
+<div class="top-bar">
+  <div class="status-bar">
+    <div class="battery"><img src="assets/d6ce1ef0-dc2e-4589-bb37-723527a39e27.png" alt=""></div>
+    <div class="wifi"><img src="assets/5a1722e1-dec9-41ae-a8a7-b430e7ef5656.png" alt=""></div>
+    <div class="cellular"><img src="assets/fa0bf6cd-ceb4-4cb9-8b3b-ef2d30496c78.png" alt=""></div>
+    <span class="status-time">9:41</span>
+  </div>
+  <div class="title-bar">
+    <div class="btn-icon"></div>
+    <div class="timer-pill">
+      <div class="timer-ic-text">
+        <div class="clock-icon"><img src="assets/d05bf9a5-edd1-463a-9458-af92d88efc84.png" alt=""></div>
+        <span class="timer-text">이벤트 종료까지 n일 n시간 n분 남았습니다.</span>
+      </div>
+    </div>
+    <div class="btn-icon"></div>
+  </div>
+</div>
+
+</div><!-- /#screen1 -->
+
+<!-- ═══════════════ SCREEN 2 — 73:16631 ═══════════════ -->
+<div id="screen2" class="screen">
+
+<!-- bg image -->
+<div class="bg"><div class="bg-img"><img src="assets/292ebbd9-439d-489e-b7b2-593aff6230e6.png" alt=""></div></div>
+
+<!-- bottom gradient dim -->
+<div class="dim"></div>
+
+<!-- progress section (under black dim) -->
+<div class="progress-section">
+  <div class="progress-wrap">
+    <div class="progress-bg-white"></div>
+    <div class="progress-bg-purple"></div>
+    <div class="progress-fill"></div>
+    <div class="progress-nums">
+      <div class="step"><div class="step-dot"><img src="assets/6819d1d5-d36c-4ae4-ac4d-4a29cbd1a61f.png" alt=""></div><span class="step-label">1</span></div>
+      <div class="step op0"><div class="step-dot"><img src="assets/6819d1d5-d36c-4ae4-ac4d-4a29cbd1a61f.png" alt=""></div><span class="step-label">2</span></div>
+      <div class="step"><div class="step-dot"><img src="assets/6819d1d5-d36c-4ae4-ac4d-4a29cbd1a61f.png" alt=""></div><span class="step-label">3</span></div>
+      <div class="step op0"><div class="step-dot"><img src="assets/6819d1d5-d36c-4ae4-ac4d-4a29cbd1a61f.png" alt=""></div><span class="step-label">4</span></div>
+      <div class="step op0"><div class="step-dot"><img src="assets/6819d1d5-d36c-4ae4-ac4d-4a29cbd1a61f.png" alt=""></div><span class="step-label">5</span></div>
+      <div class="step op0"><div class="step-dot"><img src="assets/6819d1d5-d36c-4ae4-ac4d-4a29cbd1a61f.png" alt=""></div><span class="step-label">6</span></div>
+      <div class="step"><div class="step-dot"><img src="assets/7fd9a28b-8d22-495b-b146-aeb18185256d.png" alt=""></div><span class="step-label medium">7</span></div>
+    </div>
+    <!-- ZEM bubble (step 7 → inactive → white bg) -->
+    <div class="bubble-right" data-reward-step="7"
+         data-tail-active="assets/44872742-f63b-4c8c-9f5d-6939c32a29a0.png"
+         data-tail-inactive="assets/07eeadd9-6ad8-4a7b-9d31-7f253c9d8ff5.png">
+      <div class="bubble-inner">
+        <div class="bubble-content">
+          <div class="bubble-icon"><img src="assets/f921fc5b-bfd4-435c-b135-4cecd10c3715.png" alt=""></div>
+          <span class="bubble-text">1 ZEM</span>
+        </div>
+      </div>
+      <div class="bubble-tail-zem"><div class="tail-rot"><div class="tail-rot-zem"><img class="tail-img" src="assets/07eeadd9-6ad8-4a7b-9d31-7f253c9d8ff5.png" alt=""></div></div></div>
+    </div>
+    <!-- Coin bubble (step 3 → active → purple bg) -->
+    <div class="bubble-center" data-reward-step="3"
+         data-tail-active="assets/44872742-f63b-4c8c-9f5d-6939c32a29a0.png"
+         data-tail-inactive="assets/07eeadd9-6ad8-4a7b-9d31-7f253c9d8ff5.png">
+      <div class="bubble-inner">
+        <div class="bubble-content">
+          <div class="bubble-coin-icon"><img src="assets/b84141de-2e31-4f5b-89b8-3409211ffd17.png" alt=""></div>
+          <span class="bubble-text">10,000</span>
+        </div>
+      </div>
+      <div class="bubble-tail-center"><div class="tail-rot"><div class="tail-rot-center"><img class="tail-img" src="assets/44872742-f63b-4c8c-9f5d-6939c32a29a0.png" alt=""></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- title section (under black dim) -->
+<div class="title-section">
+  <div class="title-text">
+    <p class="title-h1">내 취향은 누구?!</p>
+    <p class="title-sub">마음에 드는 캐릭터와 대화하고 선물받기</p>
+  </div>
+</div>
+
+<!-- black dim overlay (z-index:2, covers progress + title) -->
+<div class="s2c-black-dim"></div>
+
+<!-- pink CTA (z-index:3, above dim) -->
+<div class="s2c-btn" id="s2c-cta">
+  <span>캐릭터 챗 홈으로 가기</span>
+</div>
+
+<!-- completion message (z-index:3, above dim) -->
+<div class="s2c-center">
+  <div class="s2c-tooltip">
+    <div class="s2c-tooltip-box">
+      <p>내일도 말 걸어 줄거지?</p>
+    </div>
+    <div class="s2c-tooltip-arrow">
+      <div class="s2c-arrow">
+        <img src="assets/6657c418-fbb1-4828-b12b-7244ae43f5e3.png" alt="">
+      </div>
+    </div>
+  </div>
+  <div class="s2c-title-wrap">
+    <div class="s2c-title-inner">
+      <div class="s2c-msg">
+        <p>오늘의 대화 완료!</p>
+        <p>내일 만남을 기대해주세요.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="home-indicator"><div class="home-bar-wrap"><div class="home-bar"></div></div></div>
+
+<!-- top bar (black bg, z-index above everything) -->
+<div class="top-bar" style="z-index:10">
+  <div class="status-bar">
+    <div class="battery"><img src="assets/7374d835-82b3-4236-814a-cca92cdab64f.png" alt=""></div>
+    <div class="wifi"><img src="assets/f4d5d87f-a649-4ba9-9a78-4f6a08e54013.png" alt=""></div>
+    <div class="cellular"><img src="assets/d9bfffdd-e2f5-468a-8522-6335c5b66ba9.png" alt=""></div>
+    <span class="status-time">9:41</span>
+  </div>
+  <div class="title-bar">
+    <div class="xbtn" id="s2c-xbtn">
+      <div class="xinner">
+        <div class="xv70"><img src="assets/e33ad893-30f1-42e4-8858-d876dc94af95.png" alt=""></div>
+        <div class="xv71"><img src="assets/e14ffecd-f0f0-4963-ae5a-22770b15cd45.png" alt=""></div>
+      </div>
+    </div>
+    <div class="timer-pill">
+      <div class="timer-ic-text">
+        <div class="clock-icon"><img src="assets/77f95b64-fa82-4b46-888e-159a8cc2b1c1.png" alt=""></div>
+        <span class="timer-text">이벤트 종료까지 n일 n시간 n분 남았습니다.</span>
+      </div>
+    </div>
+    <div class="btn-icon" style="opacity:0"></div>
+  </div>
+</div>
+
+</div><!-- /#screen2 -->
+
+<!-- ═══════════════ SCREEN 5 — 채팅 ═══════════════ -->
+<div id="screen5" class="screen">
+  <div class="s5-char">
+    <img src="assets/2b2e289e-ace9-4917-8f2d-0e08e604ad8b.png" alt="">
+  </div>
+  <div class="s5-dim"></div>
+  <div class="s5-chat-img">
+    <img src="assets/3dc58a50-1921-4931-bf8e-ab556732fa05.png" alt="">
+  </div>
+  <div class="home-indicator"><div class="home-bar-wrap"><div class="home-bar"></div></div></div>
+  <div class="top-bar">
+    <div class="status-bar">
+      <div class="battery"><img src="assets/767147a7-a7c6-4228-8bfb-0a66c45f2cd3.png" alt=""></div>
+      <div class="wifi"><img src="assets/46659698-fb41-413b-937b-bb6b575beddb.png" alt=""></div>
+      <div class="cellular"><img src="assets/ccba7242-2fb4-4535-b5d0-f04ce331f565.png" alt=""></div>
+      <span class="status-time">9:41</span>
+    </div>
+    <div class="title-bar">
+      <div class="xbtn" id="s5-xbtn">
+        <div class="xinner">
+          <div class="xv70"><img src="assets/393c0bc7-56d9-48b8-8c75-bfd6e10644bc.png" alt=""></div>
+          <div class="xv71"><img src="assets/fe869259-c847-4194-ba5c-62c94b62fc3c.png" alt=""></div>
+        </div>
+      </div>
+      <div style="width:24px;opacity:0;"></div>
+    </div>
+  </div>
+</div><!-- /#screen5 -->
+
+<script>
+// ─── 상태값 ───
+const progressState = 3;
+
+const TOTAL_STEPS = 7, TRACK_WIDTH = 328, DOT_SIZE = 22;
+const GAP = (TRACK_WIDTH - TOTAL_STEPS * DOT_SIZE) / (TOTAL_STEPS - 1);
+const TRACK_LEFT = 24;
+
+function calcFillWidth(state) {
+  return state * (DOT_SIZE + GAP) - GAP;
+}
+
+function applyProgressState(state) {
+  var w = calcFillWidth(state);
+  document.querySelectorAll('.progress-fill').forEach(function(fill) {
+    fill.style.left = TRACK_LEFT + 'px';
+    fill.style.transform = 'none';
+    fill.style.width = w + 'px';
+  });
+  document.querySelectorAll('[data-reward-step]').forEach(function(bubble) {
+    var step    = parseInt(bubble.dataset.rewardStep, 10);
+    var inner   = bubble.querySelector('.bubble-inner');
+    var text    = bubble.querySelector('.bubble-text');
+    var tailImg = bubble.querySelector('.tail-img');
+    var isActive = step <= state;
+    inner.classList.toggle('active',        isActive);
+    inner.classList.toggle('inactive',     !isActive);
+    text.classList.toggle('active-text',    isActive);
+    text.classList.toggle('inactive-text', !isActive);
+    if (tailImg) tailImg.src = isActive ? bubble.dataset.tailActive : bubble.dataset.tailInactive;
+  });
+}
+
+applyProgressState(progressState);
+
+// ─── Screen toggle ───
+var tooltip   = document.querySelector('#screen2 .s2c-tooltip');
+var titleWrap = document.querySelector('#screen2 .s2c-title-wrap');
+
+function showScreen2() {
+  // 초기화
+  tooltip.classList.remove('s2c-show');
+  titleWrap.classList.remove('s2c-show');
+  document.getElementById('screen1').style.display = 'none';
+  document.getElementById('screen2').style.display = 'block';
+  // 툴팁 먼저
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() {
+      tooltip.classList.add('s2c-show');
+      // 툴팁 애니 도중 텍스트 겹쳐서 등장
+      setTimeout(function() {
+        titleWrap.classList.add('s2c-show');
+      }, 180);
+    });
+  });
+}
+
+document.querySelector('#screen1 .btn').addEventListener('click', showScreen2);
+document.getElementById('s2c-xbtn').addEventListener('click', function() {
+  document.getElementById('screen2').style.display = 'none';
+  tooltip.classList.remove('s2c-show');
+  titleWrap.classList.remove('s2c-show');
+  document.getElementById('screen1').style.display = 'block';
+});
+
+// "캐릭터 챗 홈으로 가기" → screen5
+document.getElementById('s2c-cta').addEventListener('click', function() {
+  document.getElementById('screen2').style.display = 'none';
+  document.getElementById('screen5').style.display = 'block';
+});
+
+// screen5 터치 → screen1
+document.getElementById('screen5').addEventListener('click', function() {
+  document.getElementById('screen5').style.display = 'none';
+  tooltip.classList.remove('s2c-show');
+  titleWrap.classList.remove('s2c-show');
+  document.getElementById('screen1').style.display = 'block';
+});
+
+// ─── Marquee (모든 timer-pill 처리) ───
+(function() {
+  document.querySelectorAll('.timer-pill').forEach(function(pill) {
+    var icText = pill.querySelector('.timer-ic-text');
+    var clone  = icText.cloneNode(true);
+    icText.style.paddingRight = '56px';
+    clone.style.paddingRight  = '56px';
+    var track = document.createElement('div');
+    track.className = 'timer-marquee-track';
+    track.appendChild(icText);
+    track.appendChild(clone);
+    pill.appendChild(track);
+  });
+})();
+</script>
+</body>
+</html>
