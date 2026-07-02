@@ -3,14 +3,14 @@
   "configurations": [
     {
       "name": "promotion_july",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "3000"],
+      "runtimeExecutable": "/usr/bin/python3",
+      "runtimeArgs": ["/private/tmp/claude-501/-Users-user-Documents-GitHub-oldWorld-Test-JK/ce3f47aa-710e-41ab-b31c-871e32f445bd/scratchpad/site/serve.py", "3000"],
       "port": 3000
     },
     {
       "name": "promotion_july_reward",
       "runtimeExecutable": "/usr/bin/python3",
-      "runtimeArgs": ["-m", "http.server", "3001"],
+      "runtimeArgs": ["/private/tmp/claude-501/-Users-user-Documents-GitHub-oldWorld-Test-JK/ce3f47aa-710e-41ab-b31c-871e32f445bd/scratchpad/site/serve.py", "3001"],
       "port": 3001
     }
   ]
