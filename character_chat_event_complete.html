@@ -411,10 +411,14 @@
     }
   }
 
-  /* ════════════════ 완료 오버레이 : 오늘의 대화 완료 (391:5192) ════════════════ */
+  /* ════════════════ 완료 오버레이 : 오늘 대화 완료 (718:17141) ════════════════ */
   /* TOP / home indicator 는 dim 위에 유지 */
   .top { z-index: 50; }
   .home-indicator { z-index: 50; }
+
+  /* 완료 화면에서는 상단 타이머 숨김 (타이머는 타이틀 아래로 이동) */
+  .timer-pill { transition: opacity 0.45s ease; }
+  .frame.complete-active .timer-pill { opacity: 0; pointer-events: none; }
 
   .complete-dim {
     position: absolute;
@@ -459,9 +463,9 @@
   .complete-grad {
     position: absolute;
     left: 0;
-    top: 626px;
+    top: 694px;
     width: 390px;
-    height: 218px;
+    height: 150px;
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, #000000 100%);
     z-index: 40;
   }
@@ -522,12 +526,12 @@
     border-top: 8px solid #ffffff;
   }
 
-  /* title : 오늘의 대화 완료! */
+  /* title : 오늘 대화 완료! */
   .complete-title {
     position: absolute;
     left: calc(50% + 1px);
     transform: translateX(-50%);
-    top: 402px;
+    bottom: 413px;
     width: 342px;
     display: flex;
     flex-direction: column;
@@ -543,6 +547,48 @@
     text-align: center;
     text-transform: capitalize;
   }
+
+  /* timer : 다음 대화까지 (타이틀 아래 고정, 흐르는 모션 없음) */
+  .complete-timer {
+    position: absolute;
+    left: calc(50% + 0.36px);
+    transform: translateX(-50%);
+    top: 441px;
+    height: 29px;
+    padding: 0 8px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 104px;
+    display: flex;
+    align-items: center;
+    gap: 4.16px;
+    overflow: hidden;
+  }
+  .complete-timer .clock {
+    width: 14.56px;
+    height: 14.56px;
+    display: block;
+    flex-shrink: 0;
+  }
+  .complete-timer p {
+    font-weight: 500;
+    font-size: 11.44px;
+    line-height: 16.64px;
+    color: #ffffff;
+    white-space: nowrap;
+  }
+
+  /* close : 닫기 X (상단 타이틀바 좌측) */
+  .complete-close {
+    position: absolute;
+    left: 16.64px;
+    top: 60.32px;
+    width: 24.96px;
+    height: 24.96px;
+    z-index: 51;
+    cursor: pointer;
+  }
+  .complete-close svg { display: block; width: 100%; height: 100%; }
+  .frame.complete-active .complete-close { pointer-events: auto; }
 
   /* btn : 캐릭터 챗 홈으로 가기 */
   .btn-home {
@@ -767,14 +813,29 @@
 
   <!-- title -->
   <div class="complete-title complete-el">
-    <p>오늘의 대화 완료!</p>
-    <p>내일 만남을 기대해주세요.</p>
+    <p>오늘 대화 완료!</p>
+    <p>내일 만남도 기대해주세요.</p>
   </div>
 
-  <!-- btn : 캐릭터 챗 홈으로 가기 -->
+  <!-- timer : 다음 대화까지 (타이틀 아래) -->
+  <div class="complete-timer complete-el">
+    <svg class="clock" preserveAspectRatio="none" viewBox="0 0 12.4805 12.4805" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6.24023 0C9.68638 0.000126528 12.4805 2.79406 12.4805 6.24023C12.4803 9.68631 9.68631 12.4803 6.24023 12.4805C2.79406 12.4805 0.000126531 9.68638 0 6.24023C0 2.79398 2.79398 0 6.24023 0ZM6.23926 2.51562C5.90447 2.51575 5.63307 2.78731 5.63281 3.12207V6.49902C5.63281 6.65976 5.69699 6.81497 5.81055 6.92871L7.66602 8.78418C7.90293 9.0211 8.2875 9.0211 8.52441 8.78418C8.76098 8.5473 8.76104 8.1636 8.52441 7.92676L6.8457 6.24805V3.12207C6.84545 2.78723 6.57415 2.51562 6.23926 2.51562Z" fill="white"/>
+    </svg>
+    <p id="completeTimerText">다음 대화까지 0시간 0분 0초</p>
+  </div>
+
+  <!-- close : 닫기 X -->
+  <div class="complete-close complete-el" id="closeBtn">
+    <svg viewBox="0 0 24.96 24.96" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6.24 6.24L18.72 18.72M18.72 6.24L6.24 18.72" stroke="#ffffff" stroke-width="2.08" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  <!-- btn : 캐릭터챗 둘러보기 -->
   <div class="btn-home complete-el" id="homeBtn">
     <span class="shine"></span>
-    <p>캐릭터 챗 홈으로 가기</p>
+    <p>캐릭터챗 둘러보기</p>
   </div>
 
 
@@ -783,32 +844,45 @@
 <script>
 (function () {
   var frame    = document.querySelector('.frame');
-  var startBtn = document.querySelector('.btn');    /* 터치해서 시작 */
-  var homeBtn  = document.getElementById('homeBtn'); /* 캐릭터 챗 홈으로 가기 */
-  var timerTexts = document.querySelectorAll('.timer-item p');
+  var startBtn = document.querySelector('.btn');     /* 터치해서 시작 */
+  var homeBtn  = document.getElementById('homeBtn'); /* 캐릭터챗 둘러보기 */
+  var closeBtn = document.getElementById('closeBtn');
+  var completeTimerText = document.getElementById('completeTimerText');
 
-  var TIMER_TEXT_MAIN     = '이벤트 종료까지 n일 n시간 n분 남았습니다.';
-  var TIMER_TEXT_COMPLETE = '다음 대화까지 n시간 n분 남았습니다.';
+  /* 다음 대화(다음 날 자정)까지 남은 시간 — 흐르는 모션 없이 1초마다 갱신 */
+  var timerId = null;
+  function updateCompleteTimer() {
+    var now  = new Date();
+    var next = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
+    var diff = Math.max(0, Math.floor((next - now) / 1000));
+    var h = Math.floor(diff / 3600);
+    var m = Math.floor((diff % 3600) / 60);
+    var s = diff % 60;
+    completeTimerText.textContent = '다음 대화까지 ' + h + '시간 ' + m + '분 ' + s + '초';
+  }
+  function startCompleteTimer() {
+    updateCompleteTimer();
+    timerId = setInterval(updateCompleteTimer, 1000);
+  }
+  function stopCompleteTimer() {
+    if (timerId) { clearInterval(timerId); timerId = null; }
+  }
 
-  function setTimerText(text) {
-    timerTexts.forEach(function (p) { p.textContent = text; });
+  function showComplete() {
+    frame.classList.add('complete-active');
+    startCompleteTimer();
+  }
+  function hideComplete() {
+    frame.classList.remove('complete-active');
+    stopCompleteTimer();
   }
 
   /* 터치해서 시작 → 완료 화면 노출 */
-  if (startBtn) {
-    startBtn.addEventListener('click', function () {
-      frame.classList.add('complete-active');
-      setTimerText(TIMER_TEXT_COMPLETE);
-    });
-  }
+  if (startBtn) startBtn.addEventListener('click', showComplete);
 
-  /* 캐릭터 챗 홈으로 가기 → (프로토타입) 첫 화면 복귀 */
-  if (homeBtn) {
-    homeBtn.addEventListener('click', function () {
-      frame.classList.remove('complete-active');
-      setTimerText(TIMER_TEXT_MAIN);
-    });
-  }
+  /* 캐릭터챗 둘러보기 / 닫기 → (프로토타입) 첫 화면 복귀 */
+  if (homeBtn)  homeBtn.addEventListener('click', hideComplete);
+  if (closeBtn) closeBtn.addEventListener('click', hideComplete);
 })();
 </script>
 
